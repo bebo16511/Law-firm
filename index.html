@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+  <title>زيكولا للمحاماة · إمبراطورية القانون</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=IBM+Plex+Sans+Arabic:wght@400;600&display=swap" rel="stylesheet">
+  
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/gh/studio-freight/lenis@1.0.29/bundled/lenis.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    :root {
+      --gold: #C9A45D;
+      --deep-navy: #050A14;
+    }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: var(--deep-navy);
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    .text-shadow {
+      text-shadow: 2px 2px 10px rgba(0,0,0,0.8), 0 0 20px rgba(0,0,0,0.5);
+    }
+
+    .glass-card {
+      background: rgba(0, 0, 0, 0.7);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(201, 164, 93, 0.3);
+      transition: all 0.4s ease;
+    }
+
+    .glass-card:hover {
+      border-color: var(--gold);
+      transform: translateY(-10px);
+      box-shadow: 0 10px 30px rgba(201, 164, 93, 0.2);
+    }
+
+    .gold-btn {
+      border: 1px solid var(--gold);
+      position: relative;
+      z-index: 1;
+      overflow: hidden;
+      transition: 0.4s;
+    }
+    .gold-btn::before {
+      content: ''; position: absolute; top:0; right:0; width:0; height:100%;
+      background: var(--gold); z-index: -1; transition: 0.4s;
+    }
+    .gold-btn:hover::before { width: 100%; }
+    .gold-btn:hover { color: #000; }
+
+    /* فيديو الخلفية */
+    .section-video {
+      position: absolute;
+      top: 50%; left: 50%;
+      min-width: 100%; min-height: 100%;
+      width: auto; height: auto;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+      opacity: 0.3;
+      z-index: 0;
+    }
+
+    .section-content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .loading-bar {
+      height: 2px;
+      background: var(--gold);
+      width: 0%;
+    }
+
+    /* تخصيص scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0a0f1a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--gold);
+      border-radius: 10px;
+    }
+
+    /* تحسينات إضافية للجوال */
+    @media (max-width: 768px) {
+      h1 { word-break: break-word; }
+      .glass-card { padding: 1.5rem; }
+      .text-5xl { font-size: 2.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="preloader" class="fixed inset-0 z-[100] flex items-center justify-center bg-black">
+  <div class="text-center">
+    <div class="text-4xl md:text-6xl font-black text-white mb-4 tracking-tighter">زيكولا</div>
+    <div class="w-48 h-1 bg-gray-800 mx-auto rounded-full overflow-hidden">
+      <div id="loader-progress" class="loading-bar"></div>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER مُحسَّن ومتوافق مع الجوال -->
+<header class="fixed top-0 w-full z-50 py-3 px-4 md:px-8 flex justify-between items-center bg-black/80 backdrop-blur-xl border-b border-gold/30 shadow-lg">
+  <div class="text-xl md:text-2xl font-black text-gold tracking-tight">زيكولا للمحاماة</div>
+  
+  <!-- أيقونة الهامبرغر للجوال -->
+  <button id="menuToggle" class="block md:hidden text-gold text-3xl focus:outline-none">
+    <i class="fas fa-bars"></i>
+  </button>
+
+  <!-- NAV للشاشات المتوسطة فأكبر -->
+  <nav class="hidden md:flex gap-6 lg:gap-8 font-bold text-sm">
+    <a href="#hero" class="hover:text-gold transition duration-300">الرئيسية</a>
+    <a href="#services" class="hover:text-gold transition duration-300">خدماتنا</a>
+    <a href="#about" class="hover:text-gold transition duration-300">من نحن</a>
+    <a href="#stats" class="hover:text-gold transition duration-300">إحصائيات</a>
+    <a href="#clients" class="hover:text-gold transition duration-300">عملاؤنا</a>
+    <a href="#awards" class="hover:text-gold transition duration-300">جوائز</a>
+    <a href="#faq" class="hover:text-gold transition duration-300">الأسئلة</a>
+    <a href="#contact" class="hover:text-gold transition duration-300">اتصل بنا</a>
+  </nav>
+  
+  <button class="hidden md:block gold-btn px-5 py-2 text-sm font-bold">اتصل بنا</button>
+</header>
+
+<!-- القائمة الجانبية المنزلقة للجوال -->
+<div id="mobileMenu" class="fixed top-0 right-0 h-screen w-64 bg-black/95 backdrop-blur-xl z-[60] transform translate-x-full transition-transform duration-300 ease-in-out border-l border-gold/30 pt-20 px-6">
+  <button id="closeMenu" class="absolute top-5 left-5 text-gold text-3xl">
+    <i class="fas fa-times"></i>
+  </button>
+  <nav class="flex flex-col gap-6 text-right text-lg font-bold">
+    <a href="#hero" class="hover:text-gold transition">الرئيسية</a>
+    <a href="#services" class="hover:text-gold transition">خدماتنا</a>
+    <a href="#about" class="hover:text-gold transition">من نحن</a>
+    <a href="#stats" class="hover:text-gold transition">إحصائيات</a>
+    <a href="#clients" class="hover:text-gold transition">عملاؤنا</a>
+    <a href="#awards" class="hover:text-gold transition">جوائز</a>
+    <a href="#faq" class="hover:text-gold transition">الأسئلة</a>
+    <a href="#contact" class="hover:text-gold transition">اتصل بنا</a>
+    <div class="border-t border-gold/30 my-2"></div>
+    <a href="#" class="gold-btn text-center px-4 py-2 text-sm">اتصل بنا</a>
+  </nav>
+</div>
+
+<!-- باقي أقسام الموقع كما هي مع تحسينات بسيطة في التجاوب -->
+<section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 md:pt-20">
+  <video class="section-video" autoplay muted loop playsinline>
+    <source src="1.mp4" type="video/mp4">
+  </video>
+  
+  <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black"></div>
+
+  <div class="relative z-10 text-center px-4 max-w-full">
+    <h1 class="text-shadow text-4xl sm:text-5xl md:text-7xl lg:text-8xl font-black mb-4 md:mb-6 leading-tight">
+      إمبراطورية <span class="text-gold">القانون</span><br>
+    </h1>
+    <p class="text-shadow text-base sm:text-lg md:text-2xl text-gray-200 max-w-3xl mx-auto mb-8 md:mb-10 font-light px-2">
+      حيث تلتقي القوة بالعدالة. نحن لا ندافع عن قضيتك فحسب، بل نصنع مستقبلك القانوني.
+    </p>
+    
+    <div class="flex flex-wrap gap-3 justify-center">
+      <div class="bg-black/40 border border-gold/30 px-4 py-1.5 md:px-6 md:py-2 rounded-full backdrop-blur-md text-sm md:text-base">
+        <i class="fas fa-check-circle text-gold ml-2"></i> +500 قضية ناجحة
+      </div>
+      <div class="bg-black/40 border border-gold/30 px-4 py-1.5 md:px-6 md:py-2 rounded-full backdrop-blur-md text-sm md:text-base">
+        <i class="fas fa-globe text-gold ml-2"></i> تغطية دولية
+      </div>
+    </div>
+
+    <div class="mt-8 md:mt-12">
+      <a href="#services" class="gold-btn inline-block px-8 md:px-10 py-3 md:py-4 text-base md:text-lg font-bold">اكتشف خدماتنا</a>
+    </div>
+  </div>
+</section>
+
+<section id="services" class="relative py-20 md:py-24 px-4 md:px-16 overflow-hidden">
+  <video class="section-video" autoplay muted loop playsinline>
+    <source src="2.mp4" type="video/mp4">
+  </video>
+  <div class="absolute inset-0 bg-black/60"></div>
+  <div class="section-content max-w-7xl mx-auto">
+    <div class="text-center mb-12 md:mb-16">
+      <h2 class="text-gold text-xs sm:text-sm tracking-[0.3em] uppercase mb-2">تخصصاتنا</h2>
+      <h3 class="text-3xl sm:text-4xl md:text-6xl font-black">مجالات الخبرة</h3>
+      <div class="h-1 w-20 bg-gold mx-auto mt-4"></div>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+      <div class="glass-card p-8 md:p-10 rounded-2xl">
+        <i class="fas fa-gavel text-gold text-3xl md:text-4xl mb-4 md:mb-6"></i>
+        <h4 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">التقاضي الجنائي</h4>
+        <p class="text-gray-400 leading-relaxed text-sm md:text-base">دفاع صلب في أعقد القضايا الجنائية أمام المحاكم العليا.</p>
+      </div>
+      <div class="glass-card p-8 md:p-10 rounded-2xl">
+        <i class="fas fa-handshake text-gold text-3xl md:text-4xl mb-4 md:mb-6"></i>
+        <h4 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">قانون الشركات</h4>
+        <p class="text-gray-400 leading-relaxed text-sm md:text-base">تأسيس وهيكلة الشركات وحماية العلامات التجارية عالمياً.</p>
+      </div>
+      <div class="glass-card p-8 md:p-10 rounded-2xl">
+        <i class="fas fa-scale-unbalanced text-gold text-3xl md:text-4xl mb-4 md:mb-6"></i>
+        <h4 class="text-xl md:text-2xl font-bold mb-3 md:mb-4">التحكيم الدولي</h4>
+        <p class="text-gray-400 leading-relaxed text-sm md:text-base">حل المنازعات التجارية العابرة للحدود بأعلى معايير السرية.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="about" class="relative py-20 md:py-24 px-4 md:px-16 overflow-hidden">
+  <video class="section-video" autoplay muted loop playsinline>
+    <source src="3.mp4" type="video/mp4">
+  </video>
+  <div class="absolute inset-0 bg-black/60"></div>
+  <div class="section-content max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-16">
+    <div class="w-full md:w-1/2">
+      <div class="relative group">
+        <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=1000" class="rounded-2xl shadow-2xl border border-gold/20 w-full h-auto" alt="قانون">
+        <div class="absolute -bottom-4 md:-bottom-6 -right-4 md:-right-6 bg-gold p-4 md:p-8 rounded-2xl text-black text-center font-black text-sm md:text-base">
+          <span class="text-2xl md:text-4xl">25</span><br>عاماً من الخبرة
+        </div>
+      </div>
+    </div>
+    <div class="w-full md:w-1/2">
+      <h2 class="text-gold text-lg md:text-xl font-bold mb-3 md:mb-4">لماذا زيكولا؟</h2>
+      <h3 class="text-2xl md:text-4xl lg:text-5xl font-black mb-4 md:mb-6 leading-tight">نحن لا نربح القضايا فقط، بل نصنع السوابق القانونية.</h3>
+      <p class="text-gray-300 text-base md:text-lg mb-6 md:mb-8 leading-relaxed">
+        تأسست كلية زيكولا للمحاماة لتكون المرجع الأول في الشرق الأوسط. نجمع بين الخبرة الأكاديمية العميقة والتحرك الميداني الجريء.
+      </p>
+      <ul class="space-y-3 text-sm md:text-base">
+        <li class="flex items-center gap-3 text-gray-200">
+          <i class="fas fa-check text-gold"></i> فريق من المستشارين الدوليين
+        </li>
+        <li class="flex items-center gap-3 text-gray-200">
+          <i class="fas fa-check text-gold"></i> سرية بيانات مطلقة بنظام تشفير عسكري
+        </li>
+        <li class="flex items-center gap-3 text-gray-200">
+          <i class="fas fa-check text-gold"></i> استجابة فورية على مدار الساعة
+        </li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="stats" class="relative py-20 md:py-24 px-4 md:px-16 overflow-hidden">
+  <video class="section-video" autoplay muted loop playsinline>
+    <source src="https://assets.mixkit.co/videos/preview/mixkit-lawyer-working-at-the-office-43862-large.mp4" type="video/mp4">
+  </video>
+  <div class="absolute inset-0 bg-black/70"></div>
+  <div class="section-content max-w-7xl mx-auto text-center">
+    <h2 class="text-gold text-xs sm:text-sm tracking-[0.3em] uppercase mb-2">أرقامنا</h2>
+    <h3 class="text-3xl sm:text-4xl md:text-6xl font-black mb-10 md:mb-16">إحصائيات تروي قصتنا</h3>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
+      <div class="glass-card p-4 md:p-8 rounded-2xl">
+        <div class="text-3xl md:text-5xl font-black text-gold mb-1 md:mb-2">+500</div>
+        <p class="text-gray-300 text-sm md:text-base">قضية ناجحة</p>
+      </div>
+      <div class="glass-card p-4 md:p-8 rounded-2xl">
+        <div class="text-3xl md:text-5xl font-black text-gold mb-1 md:mb-2">+50</div>
+        <p class="text-gray-300 text-sm md:text-base">خبير قانوني</p>
+      </div>
+      <div class="glass-card p-4 md:p-8 rounded-2xl">
+        <div class="text-3xl md:text-5xl font-black text-gold mb-1 md:mb-2">15</div>
+        <p class="text-gray-300 text-sm md:text-base">فرع حول العالم</p>
+      </div>
+      <div class="glass-card p-4 md:p-8 rounded-2xl">
+        <div class="text-3xl md:text-5xl font-black text-gold mb-1 md:mb-2">25</div>
+        <p class="text-gray-300 text-sm md:text-base">عاماً من التميز</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="clients" class="relative py-20 md:py-24 px-4 md:px-16 overflow-hidden">
+  <video class="section-video" autoplay muted loop playsinline>
+    <source src="https://assets.mixkit.co/videos/preview/mixkit-business-deal-handshake-338-large.mp4" type="video/mp4">
+  </video>
+  <div class="absolute inset-0 bg-black/60"></div>
+  <div class="section-content max-w-7xl mx-auto text-center">
+    <h2 class="text-gold text-xs sm:text-sm tracking-[0.3em] uppercase mb-2">ثقة العملاء</h2>
+    <h3 class="text-3xl sm:text-4xl md:text-6xl font-black mb-10 md:mb-16">من شركاؤنا</h3>
+    <div class="flex flex-wrap justify-center gap-4 md:gap-8 items-center">
+      <div class="glass-card px-4 md:px-8 py-2 md:py-4 rounded-xl text-lg md:text-2xl font-bold text-gold">شركة أموال</div>
+      <div class="glass-card px-4 md:px-8 py-2 md:py-4 rounded-xl text-lg md:text-2xl font-bold text-gold">بنك الريان</div>
+      <div class="glass-card px-4 md:px-8 py-2 md:py-4 rounded-xl text-lg md:text-2xl font-bold text-gold">مؤسسة نماء</div>
+      <div class="glass-card px-4 md:px-8 py-2 md:py-4 rounded-xl text-lg md:text-2xl font-bold text-gold">مجموعة فرسان</div>
+      <div class="glass-card px-4 md:px-8 py-2 md:py-4 rounded-xl text-lg md:text-2xl font-bold text-gold">هيئة العدالة</div>
+    </div>
+  </div>
+</section>
+
+<section id="awards" class="relative py-20 md:py-24 px-4 md:px-16 overflow-hidden">
+  <video class="section-video" autoplay muted loop playsinline>
+    <source src="https://assets.mixkit.co/videos/preview/mixkit-conference-with-lots-of-people-341-large.mp4" type="video/mp4">
+  </video>
+  <div class="absolute inset-0 bg-black/60"></div>
+  <div class="section-content max-w-7xl mx-auto">
+    <h2 class="text-gold text-xs sm:text-sm tracking-[0.3em] uppercase mb-2 text-center">تكريمات</h2>
+    <h3 class="text-3xl sm:text-4xl md:text-6xl font-black mb-10 md:mb-16 text-center">جوائز وتقديرات</h3>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
+      <div class="glass-card p-6 md:p-8 rounded-2xl text-center">
+        <i class="fas fa-trophy text-gold text-4xl md:text-5xl mb-3 md:mb-4"></i>
+        <h4 class="text-xl md:text-2xl font-bold mb-2">أفضل مكتب محاماة 2025</h4>
+        <p class="text-gray-400 text-sm md:text-base">جوائز الشرق الأوسط للقانون</p>
+      </div>
+      <div class="glass-card p-6 md:p-8 rounded-2xl text-center">
+        <i class="fas fa-medal text-gold text-4xl md:text-5xl mb-3 md:mb-4"></i>
+        <h4 class="text-xl md:text-2xl font-bold mb-2">التميز في التحكيم الدولي</h4>
+        <p class="text-gray-400 text-sm md:text-base">مجلة القانون العالمي</p>
+      </div>
+      <div class="glass-card p-6 md:p-8 rounded-2xl text-center">
+        <i class="fas fa-star text-gold text-4xl md:text-5xl mb-3 md:mb-4"></i>
+        <h4 class="text-xl md:text-2xl font-bold mb-2">جائزة الابتكار القانوني</h4>
+        <p class="text-gray-400 text-sm md:text-base">منتدى العدالة الدولي</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="faq" class="relative py-20 md:py-24 px-4 md:px-16 overflow-hidden">
+  <video class="section-video" autoplay muted loop playsinline>
+    <source src="https://assets.mixkit.co/videos/preview/mixkit-library-shelves-with-books-43865-large.mp4" type="video/mp4">
+  </video>
+  <div class="absolute inset-0 bg-black/60"></div>
+  <div class="section-content max-w-7xl mx-auto">
+    <h2 class="text-gold text-xs sm:text-sm tracking-[0.3em] uppercase mb-2 text-center">استفساراتكم</h2>
+    <h3 class="text-3xl sm:text-4xl md:text-6xl font-black mb-10 md:mb-16 text-center">الأسئلة الشائعة</h3>
+    <div class="space-y-4 md:space-y-6">
+      <div class="glass-card p-5 md:p-6 rounded-2xl">
+        <h4 class="text-lg md:text-xl font-bold mb-2 text-gold">كيف أستشير محاميًا؟</h4>
+        <p class="text-gray-300 text-sm md:text-base">يمكنك حجز استشارة عبر موقعنا أو الاتصال بفريق الدعم. نقدم استشارات أولية مجانية.</p>
+      </div>
+      <div class="glass-card p-5 md:p-6 rounded-2xl">
+        <h4 class="text-lg md:text-xl font-bold mb-2 text-gold">ما هي تكلفة الخدمات القانونية؟</h4>
+        <p class="text-gray-300 text-sm md:text-base">تعتمد التكلفة على نوع القضية ومدى تعقيدها. نقدم عروض أسعار شفافة ومفصلة.</p>
+      </div>
+      <div class="glass-card p-5 md:p-6 rounded-2xl">
+        <h4 class="text-lg md:text-xl font-bold mb-2 text-gold">هل تتعاملون مع قضايا دولية؟</h4>
+        <p class="text-gray-300 text-sm md:text-base">نعم، لدينا فريق متخصص في القضايا العابرة للحدود ولدينا شراكات مع مكاتب حول العالم.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="relative py-20 md:py-24 px-4 md:px-16 overflow-hidden">
+  <video class="section-video" autoplay muted loop playsinline>
+    <source src="https://assets.mixkit.co/videos/preview/mixkit-modern-office-with-computers-43864-large.mp4" type="video/mp4">
+  </video>
+  <div class="absolute inset-0 bg-black/60"></div>
+  <div class="section-content max-w-7xl mx-auto">
+    <h2 class="text-gold text-xs sm:text-sm tracking-[0.3em] uppercase mb-2 text-center">تواصلوا معنا</h2>
+    <h3 class="text-3xl sm:text-4xl md:text-6xl font-black mb-10 md:mb-16 text-center">نحن هنا لمساعدتكم</h3>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+      <div class="glass-card p-6 md:p-8 rounded-2xl">
+        <h4 class="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-gold">معلومات الاتصال</h4>
+        <ul class="space-y-3 md:space-y-4 text-gray-300 text-sm md:text-base">
+          <li><i class="fas fa-map-marker-alt text-gold ml-3"></i> الرياض، المملكة العربية السعودية</li>
+          <li><i class="fas fa-phone-alt text-gold ml-3"></i> +966 11 234 5678</li>
+          <li><i class="fas fa-envelope text-gold ml-3"></i> info@zekola-law.com</li>
+          <li><i class="fas fa-clock text-gold ml-3"></i> السبت - الخميس: 9 صباحاً - 9 مساءً</li>
+        </ul>
+      </div>
+      <div class="glass-card p-6 md:p-8 rounded-2xl">
+        <h4 class="text-xl md:text-2xl font-bold mb-4 md:mb-6 text-gold">أرسل رسالة</h4>
+        <form>
+          <input type="text" placeholder="الاسم" class="w-full p-3 mb-3 md:mb-4 bg-black/50 border border-gold/30 rounded-lg text-white text-sm md:text-base">
+          <input type="email" placeholder="البريد الإلكتروني" class="w-full p-3 mb-3 md:mb-4 bg-black/50 border border-gold/30 rounded-lg text-white text-sm md:text-base">
+          <textarea rows="4" placeholder="الرسالة" class="w-full p-3 mb-3 md:mb-4 bg-black/50 border border-gold/30 rounded-lg text-white text-sm md:text-base"></textarea>
+          <button class="gold-btn w-full py-3 text-base md:text-lg font-bold">إرسال</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="bg-black py-8 md:py-12 border-t border-gold/20 px-4 md:px-6">
+  <div class="max-w-7xl mx-auto text-center">
+    <div class="text-2xl md:text-3xl font-black text-white mb-4 md:mb-6">زيكولا للمحاماة</div>
+    <div class="flex justify-center gap-4 md:gap-6 mb-6 md:mb-8 text-xl md:text-2xl">
+      <a href="#" class="text-gray-500 hover:text-gold"><i class="fab fa-linkedin"></i></a>
+      <a href="#" class="text-gray-500 hover:text-gold"><i class="fab fa-twitter"></i></a>
+      <a href="#" class="text-gray-500 hover:text-gold"><i class="fab fa-instagram"></i></a>
+      <a href="#" class="text-gray-500 hover:text-gold"><i class="fab fa-facebook"></i></a>
+    </div>
+    <p class="text-gray-600 text-xs md:text-sm">© 2026 إمبراطورية زيكولا للقانون. جميع الحقوق محفوظة.</p>
+  </div>
+</footer>
+
+<script>
+  // Preloader Logic
+  window.addEventListener('load', () => {
+    const progress = document.getElementById('loader-progress');
+    gsap.to(progress, {
+      width: '100%',
+      duration: 1,
+      onComplete: () => {
+        gsap.to('#preloader', {
+          opacity: 0,
+          pointerEvents: 'none',
+          duration: 0.8
+        });
+      }
+    });
+  });
+
+  // Smooth Scroll
+  const lenis = new Lenis();
+  function raf(time) {
+    lenis.raf(time);
+    requestAnimationFrame(raf);
+  }
+  requestAnimationFrame(raf);
+
+  // GSAP Animations
+  gsap.registerPlugin(ScrollTrigger);
+
+  gsap.utils.toArray('.section-content').forEach(section => {
+    gsap.from(section, {
+      scrollTrigger: {
+        trigger: section,
+        start: "top 85%",
+      },
+      y: 80,
+      opacity: 0,
+      duration: 1.2,
+      ease: "power3.out"
+    });
+  });
+
+  gsap.from('#hero h1', {
+    y: 100,
+    opacity: 0,
+    duration: 1.5,
+    ease: "power4.out"
+  });
+
+  // Mobile Menu Logic
+  const menuToggle = document.getElementById('menuToggle');
+  const closeMenu = document.getElementById('closeMenu');
+  const mobileMenu = document.getElementById('mobileMenu');
+
+  if (menuToggle && closeMenu && mobileMenu) {
+    menuToggle.addEventListener('click', () => {
+      mobileMenu.classList.remove('translate-x-full');
+    });
+    closeMenu.addEventListener('click', () => {
+      mobileMenu.classList.add('translate-x-full');
+    });
+    // Close menu when clicking a link (optional)
+    const mobileLinks = mobileMenu.querySelectorAll('a');
+    mobileLinks.forEach(link => {
+      link.addEventListener('click', () => {
+        mobileMenu.classList.add('translate-x-full');
+      });
+    });
+  }
+
+  // Three.js Particle (same as before, but ensure it's behind content)
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+  const renderer = new THREE.WebGLRenderer({ alpha: true });
+  renderer.setSize(window.innerWidth, window.innerHeight);
+  const heroSection = document.getElementById('hero');
+  if (heroSection) {
+    heroSection.appendChild(renderer.domElement);
+    renderer.domElement.style.position = 'absolute';
+    renderer.domElement.style.top = '0';
+    renderer.domElement.style.left = '0';
+    renderer.domElement.style.zIndex = '1';
+    renderer.domElement.style.pointerEvents = 'none'; // allow clicking through
+  }
+
+  const geometry = new THREE.BufferGeometry();
+  const vertices = [];
+  for (let i = 0; i < 3000; i++) { // fewer particles on mobile? still fine
+    vertices.push(THREE.MathUtils.randFloatSpread(2000), THREE.MathUtils.randFloatSpread(2000), THREE.MathUtils.randFloatSpread(2000));
+  }
+  geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
+  const particles = new THREE.Points(geometry, new THREE.PointsMaterial({ color: 0xC9A45D, size: 1.5 }));
+  scene.add(particles);
+  camera.position.z = 1000;
+
+  function animate() {
+    requestAnimationFrame(animate);
+    particles.rotation.y += 0.0005;
+    renderer.render(scene, camera);
+  }
+  animate();
+
+  window.addEventListener('resize', () => {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+  });
+</script>
+
+</body>
+</html>
