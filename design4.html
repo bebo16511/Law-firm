@@ -1,0 +1,1037 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>محامون الخبراء | صفحة هبوط تفاعلية</title>
+  <!-- Font Awesome 6 (المجاني) -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts: خط عربي عصري + خط إنجليزي أنيق -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <style>
+    /* ===== المتغيرات وإعادة الضبط ===== */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background-color: #0a0f1e;
+      color: #f0f4fa;
+      line-height: 1.6;
+      overflow-x: hidden;
+      scroll-behavior: smooth;
+    }
+
+    /* شريط التمرير المخصص */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1e2638;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #c5a059;
+      border-radius: 8px;
+    }
+
+    /* ===== فئات مساعدة ===== */
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 0 30px;
+    }
+
+    .section-title {
+      font-size: 3rem;
+      font-weight: 900;
+      margin-bottom: 20px;
+      position: relative;
+      display: inline-block;
+      font-family: 'Playfair Display', serif;
+      letter-spacing: 1px;
+      color: #fff;
+      text-shadow: 0 5px 15px rgba(197, 160, 89, 0.3);
+    }
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      right: 0;
+      width: 80px;
+      height: 4px;
+      background: linear-gradient(90deg, #c5a059, #8b6f3f);
+      border-radius: 4px;
+      box-shadow: 0 0 15px #c5a059;
+    }
+    .section-subtitle {
+      font-size: 1.2rem;
+      color: #b0b9d0;
+      margin-bottom: 60px;
+      max-width: 700px;
+    }
+
+    /* الأزرار التفاعلية */
+    .btn-primary {
+      background: linear-gradient(45deg, #c5a059, #a58344);
+      border: none;
+      color: #0a0f1e;
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 14px 40px;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0 10px 20px rgba(197, 160, 89, 0.4);
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      border: 1px solid rgba(255,255,255,0.2);
+      letter-spacing: 1px;
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+      z-index: -1;
+    }
+    .btn-primary:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 30px rgba(197, 160, 89, 0.6);
+      background: linear-gradient(45deg, #d4af6c, #b8914a);
+    }
+    .btn-primary:hover::before {
+      left: 100%;
+    }
+
+    /* ===== شريط التنقل الثابت (مُحسّن للهاتف) ===== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 15px 30px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 1000;
+      transition: background 0.4s, padding 0.3s, box-shadow 0.3s;
+      backdrop-filter: blur(5px);
+    }
+    .navbar.scrolled {
+      background: rgba(10, 15, 30, 0.95);
+      padding: 12px 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid rgba(197,160,89,0.3);
+    }
+    .logo {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #fff;
+      text-shadow: 0 0 20px #c5a059;
+      letter-spacing: 1px;
+      z-index: 1001;
+    }
+    .logo span {
+      color: #c5a059;
+      font-family: 'Playfair Display', serif;
+    }
+
+    /* قائمة سطح المكتب */
+    .nav-links {
+      display: flex;
+      gap: 30px;
+    }
+    .nav-links a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1rem;
+      position: relative;
+      padding: 5px 0;
+      transition: color 0.3s;
+      white-space: nowrap;
+    }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width: 0%;
+      height: 2px;
+      background: #c5a059;
+      transition: width 0.3s ease;
+    }
+    .nav-links a:hover {
+      color: #c5a059;
+    }
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* أيقونة الهامبرغر (للجوال) */
+    .menu-toggle {
+      display: none;
+      font-size: 2rem;
+      color: #c5a059;
+      cursor: pointer;
+      z-index: 1001;
+      transition: color 0.3s;
+    }
+    .menu-toggle:hover {
+      color: #fff;
+    }
+
+    /* ===== القسم الرئيسي (هيرو) مع فيديو خلفية ===== */
+    .hero {
+      position: relative;
+      height: 100vh;
+      min-height: 600px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+    #hero-video {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -2;
+      filter: brightness(0.4) contrast(1.2);
+    }
+    .hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at center, transparent 0%, #0a0f1e 100%);
+      z-index: -1;
+    }
+    .hero-content {
+      max-width: 900px;
+      padding: 20px;
+      animation: fadeInUp 1.5s ease;
+    }
+    .hero-content h1 {
+      font-size: 5rem;
+      font-weight: 900;
+      font-family: 'Playfair Display', serif;
+      line-height: 1.2;
+      margin-bottom: 20px;
+      text-shadow: 0 10px 30px rgba(0,0,0,0.7);
+    }
+    .hero-content h1 span {
+      color: #c5a059;
+      display: block;
+      font-size: 4rem;
+    }
+    .hero-content p {
+      font-size: 1.5rem;
+      margin-bottom: 40px;
+      color: #e0e5f0;
+      text-shadow: 0 2px 10px black;
+    }
+    .typing-text {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #c5a059;
+      min-height: 3rem;
+      margin-bottom: 30px;
+      direction: ltr; /* للحفاظ على اتجاه الكتابة بتأثير الآلة الكاتبة */
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ===== قسم الخدمات ===== */
+    .services {
+      padding: 100px 0;
+      background: #0f1423;
+      position: relative;
+    }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+      margin-top: 50px;
+    }
+    .service-card {
+      background: rgba(255,255,255,0.03);
+      backdrop-filter: blur(10px);
+      border: 1px solid rgba(197,160,89,0.2);
+      border-radius: 30px;
+      padding: 30px 20px;
+      text-align: center;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 20px 30px rgba(0,0,0,0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, transparent, #c5a059, transparent);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+    }
+    .service-card:hover {
+      transform: translateY(-10px) scale(1.02);
+      border-color: #c5a059;
+      box-shadow: 0 30px 40px rgba(197,160,89,0.3);
+    }
+    .service-card:hover::before {
+      transform: translateX(100%);
+    }
+    .service-card img {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 20px;
+      border: 3px solid #c5a059;
+      transition: transform 0.5s;
+    }
+    .service-card:hover img {
+      transform: rotate(8deg) scale(1.1);
+    }
+    .service-card h3 {
+      font-size: 1.8rem;
+      margin-bottom: 15px;
+    }
+    .service-card p {
+      color: #b5bedb;
+      font-size: 1rem;
+    }
+
+    /* ===== قسم من نحن (صورة + فيديو) ===== */
+    .about {
+      padding: 100px 0;
+      background: #0a0f1e;
+    }
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      align-items: center;
+    }
+    .about-content h2 {
+      font-size: 3rem;
+      font-weight: 900;
+      font-family: 'Playfair Display', serif;
+    }
+    .about-content h2 span {
+      color: #c5a059;
+    }
+    .about-content p {
+      font-size: 1.1rem;
+      margin: 25px 0;
+      color: #cbd0df;
+    }
+    .about-stats {
+      display: flex;
+      gap: 30px;
+      margin-top: 30px;
+    }
+    .stat-item {
+      text-align: center;
+    }
+    .stat-number {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: #c5a059;
+      font-family: 'Playfair Display', serif;
+    }
+    .about-video {
+      border-radius: 30px;
+      overflow: hidden;
+      box-shadow: 0 30px 40px rgba(0,0,0,0.5);
+      border: 2px solid #c5a059;
+      position: relative;
+    }
+    .about-video video {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.5s;
+    }
+    .about-video:hover video {
+      transform: scale(1.03);
+    }
+
+    /* ===== فريق المحامين (صور) ===== */
+    .team {
+      padding: 100px 0;
+      background: #0f1423;
+    }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 30px;
+      margin-top: 50px;
+    }
+    .team-member {
+      background: rgba(0,0,0,0.3);
+      border-radius: 30px;
+      overflow: hidden;
+      border: 1px solid rgba(197,160,89,0.3);
+      transition: 0.4s;
+      position: relative;
+    }
+    .team-member:hover {
+      transform: scale(1.03);
+      border-color: #c5a059;
+      box-shadow: 0 30px 40px rgba(197,160,89,0.4);
+    }
+    .member-img {
+      width: 100%;
+      height: 280px;
+      object-fit: cover;
+      transition: 0.5s;
+      filter: grayscale(0.3);
+    }
+    .team-member:hover .member-img {
+      filter: grayscale(0);
+      transform: scale(1.1);
+    }
+    .member-info {
+      padding: 20px 15px;
+      background: rgba(10,15,30,0.9);
+      text-align: center;
+    }
+    .member-info h3 {
+      font-size: 1.6rem;
+      margin-bottom: 5px;
+    }
+    .member-info p {
+      color: #c5a059;
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 0.95rem;
+    }
+    .social-links {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+    .social-links a {
+      color: #fff;
+      font-size: 1.2rem;
+      transition: 0.3s;
+    }
+    .social-links a:hover {
+      color: #c5a059;
+      transform: translateY(-3px);
+    }
+
+    /* ===== إحصائيات تفاعلية ===== */
+    .stats-section {
+      padding: 70px 0;
+      background: linear-gradient(135deg, #0a0f1e, #1a1f30);
+      text-align: center;
+    }
+    .stats-container {
+      display: flex;
+      justify-content: space-around;
+      flex-wrap: wrap;
+      gap: 30px;
+    }
+    .stat-block {
+      flex: 1 1 160px;
+    }
+    .stat-block i {
+      font-size: 3rem;
+      color: #c5a059;
+      margin-bottom: 15px;
+    }
+    .stat-block .num {
+      font-size: 3.5rem;
+      font-weight: 900;
+      font-family: 'Playfair Display', serif;
+      color: #fff;
+      line-height: 1.2;
+    }
+    .stat-block p {
+      font-size: 1.2rem;
+      color: #b0b9d0;
+    }
+
+    /* ===== نموذج الاتصال ===== */
+    .contact {
+      padding: 100px 0;
+      background: #0f1423;
+      position: relative;
+    }
+    .contact-form {
+      max-width: 700px;
+      margin: 0 auto;
+      background: rgba(255,255,255,0.02);
+      backdrop-filter: blur(5px);
+      padding: 50px 40px;
+      border-radius: 40px;
+      border: 1px solid rgba(197,160,89,0.2);
+      box-shadow: 0 30px 40px rgba(0,0,0,0.3);
+    }
+    .form-group {
+      margin-bottom: 25px;
+    }
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 16px 22px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid #2f354a;
+      border-radius: 50px;
+      font-size: 1rem;
+      color: #fff;
+      font-family: 'Cairo', sans-serif;
+      transition: 0.3s;
+    }
+    .form-group textarea {
+      border-radius: 30px;
+      resize: vertical;
+    }
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #c5a059;
+      box-shadow: 0 0 20px rgba(197,160,89,0.3);
+    }
+    .contact .btn-primary {
+      width: 100%;
+      font-size: 1.2rem;
+      padding: 16px 20px;
+    }
+
+    /* ===== الفوتر ===== */
+    footer {
+      background: #050812;
+      padding: 30px 0;
+      text-align: center;
+      border-top: 1px solid #c5a05930;
+    }
+    .footer-content p {
+      color: #7a82a0;
+      font-size: 0.95rem;
+    }
+
+    /* ===== تأثيرات التمرير (الظهور المتحرك) ===== */
+    .hidden {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: all 1s ease;
+    }
+    .show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ===== تحسينات متقدمة للهاتف ===== */
+    @media (max-width: 992px) {
+      .container {
+        padding: 0 20px;
+      }
+      .section-title {
+        font-size: 2.5rem;
+      }
+      .hero-content h1 {
+        font-size: 4rem;
+      }
+      .hero-content h1 span {
+        font-size: 3rem;
+      }
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+      .about-content h2 {
+        font-size: 2.5rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      /* شريط التنقل: إخفاء الروابط وإظهار الهامبرغر */
+      .nav-links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 70%;
+        height: 100vh;
+        background: rgba(10, 15, 30, 0.98);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 30px;
+        transition: right 0.4s ease;
+        z-index: 1000;
+        border-left: 1px solid #c5a059;
+        box-shadow: -5px 0 30px rgba(0,0,0,0.5);
+      }
+      .nav-links.active {
+        right: 0;
+      }
+      .nav-links a {
+        font-size: 1.4rem;
+        margin: 10px 0;
+      }
+      .menu-toggle {
+        display: block;
+      }
+      .navbar {
+        padding: 12px 20px;
+      }
+      .logo {
+        font-size: 1.6rem;
+      }
+
+      .hero-content h1 {
+        font-size: 3rem;
+      }
+      .hero-content h1 span {
+        font-size: 2.2rem;
+      }
+      .hero-content p {
+        font-size: 1.2rem;
+      }
+      .typing-text {
+        font-size: 1.4rem;
+        min-height: 2.5rem;
+      }
+      .btn-primary {
+        padding: 12px 30px;
+        font-size: 1rem;
+      }
+
+      .services-grid {
+        grid-template-columns: 1fr;
+        gap: 25px;
+      }
+      .service-card {
+        padding: 30px 20px;
+      }
+
+      .about-stats {
+        justify-content: space-around;
+      }
+      .stat-number {
+        font-size: 2.3rem;
+      }
+
+      .team-grid {
+        grid-template-columns: 1fr;
+        max-width: 400px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .stats-container {
+        flex-direction: column;
+        align-items: center;
+      }
+      .stat-block {
+        width: 100%;
+        max-width: 250px;
+      }
+
+      .contact-form {
+        padding: 40px 25px;
+        border-radius: 30px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .section-title {
+        font-size: 2rem;
+      }
+      .section-subtitle {
+        font-size: 1rem;
+      }
+      .hero-content h1 {
+        font-size: 2.5rem;
+      }
+      .hero-content h1 span {
+        font-size: 2rem;
+      }
+      .typing-text {
+        font-size: 1.2rem;
+      }
+      .about-content h2 {
+        font-size: 2rem;
+      }
+      .about-content p {
+        font-size: 1rem;
+      }
+      .stat-number {
+        font-size: 2rem;
+      }
+      .contact-form {
+        padding: 30px 20px;
+      }
+      .form-group input,
+      .form-group textarea {
+        padding: 14px 18px;
+      }
+    }
+
+    /* تحسين إضافي للأزرار للمس */
+    .btn-primary, .nav-links a, .menu-toggle {
+      -webkit-tap-highlight-color: transparent;
+    }
+  </style>
+</head>
+<body>
+  <!-- شريط التنقل (مع قائمة هامبورجر) -->
+  <nav class="navbar" id="navbar">
+    <div class="logo"><span>زيكولا للمحاماة</span></div>
+    <div class="menu-toggle" id="menu-toggle">
+      <i class="fas fa-bars"></i>
+    </div>
+    <div class="nav-links" id="nav-links">
+      <a href="#home">الرئيسية</a>
+      <a href="#services">خدماتنا</a>
+      <a href="#about">من نحن</a>
+      <a href="#team">الفريق</a>
+      <a href="#contact">اتصل بنا</a>
+    </div>
+  </nav>
+
+  <!-- قسم الهيرو مع فيديو خلفية -->
+  <section class="hero" id="home">
+    <!-- فيديو الخلفية من Pexels (قانوني) - مقطع قاضٍ يقرع المطرقة -->
+    <video autoplay muted loop playsinline id="hero-video" poster="https://images.pexels.com/photos/6077326/pexels-photo-6077326.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2">
+      <source src="https://videos.pexels.com/video-files/5775851/5775851-uhd_2560_1440_30fps.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>محامون <span>من أجل العدالة</span></h1>
+      <div class="typing-text" id="typing"></div>
+      <p>خبرة • نزاهة • نتائج ملموسة</p>
+      <button class="btn-primary" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'});">احصل على استشارة مجانية</button>
+    </div>
+  </section>
+
+  <!-- قسم الخدمات -->
+  <section class="services" id="services">
+    <div class="container">
+      <h2 class="section-title hidden">خدماتنا القانونية</h2>
+      <p class="section-subtitle hidden">نقدم حلولاً قانونية متكاملة بمعايير دولية</p>
+      <div class="services-grid">
+        <!-- بطاقة خدمة مع صورة -->
+        <div class="service-card hidden">
+          <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=2070&auto=format&fit=crop" alt="قانون الأعمال" loading="lazy">
+          <h3>قانون الأعمال</h3>
+          <p>استشارات عقود، تأسيس شركات، امتثال قانوني.</p>
+        </div>
+        <div class="service-card hidden">
+          <img src="https://images.unsplash.com/photo-1593113630400-ea4288922497?q=80&w=2070&auto=format&fit=crop" alt="قانون جنائي" loading="lazy">
+          <h3>القانون الجنائي</h3>
+          <p>دفوع قوية وتمثيل أمام المحاكم بكفاءة.</p>
+        </div>
+        <div class="service-card hidden">
+          <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?q=80&w=2070&auto=format&fit=crop" alt="قانون الأسرة" style="object-position: right;" loading="lazy">
+          <h3>قانون الأسرة</h3>
+          <p>أحوال شخصية، وصاية، وحل النزاعات الأسرية.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- قسم من نحن (صورة وفيديو) -->
+  <section class="about" id="about">
+    <div class="container about-grid">
+      <div class="about-content hidden">
+        <h2>شركة <span>الخبراء</span> للمحاماة</h2>
+        <p>نحن فريق من المحامين ذوي الخبرة الواسعة في مختلف فروع القانون. نضع مصلحة العميل فوق كل اعتبار، ونسعى لتحقيق العدالة بأعلى معايير المهنة. تأسست الشركة عام 2005 ومنذ ذلك الحين ونحن ندافع عن حقوق عملائنا بكل شرف وتفان.</p>
+        <div class="about-stats">
+          <div class="stat-item">
+            <div class="stat-number" data-target="500">0</div>
+            <p>قضية ناجحة</p>
+          </div>
+          <div class="stat-item">
+            <div class="stat-number" data-target="20">0</div>
+            <p>عام خبرة</p>
+          </div>
+        </div>
+      </div>
+      <div class="about-video hidden">
+        <!-- فيديو تعريفي عن الشركة (محامٍ يشرح) -->
+        <video controls muted loop playsinline poster="https://images.pexels.com/photos/6077326/pexels-photo-6077326.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2">
+          <source src="1.mp4" type="video/mp4">
+          المتصفح لا يدعم تشغيل الفيديو.
+        </video>
+      </div>
+    </div>
+  </section>
+
+  <!-- فريق المحامين (صور) -->
+  <section class="team" id="team">
+    <div class="container">
+      <h2 class="section-title hidden">فريقنا المتميز</h2>
+      <p class="section-subtitle hidden">محامون على أعلى مستوى من الكفاءة والخبرة</p>
+      <div class="team-grid">
+        <div class="team-member hidden">
+          <img class="member-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1cd5cficPGBS6XNpxD_7RP5QECi6z6k2Ptg&s" alt="محامي" loading="lazy">
+          <div class="member-info">
+            <h3>د. أحمد الخالدي</h3>
+            <p>شريك مؤسس - قانون جنائي</p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="team-member hidden">
+          <img class="member-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1cd5cficPGBS6XNpxD_7RP5QECi6z6k2Ptg&s" alt="محامية" loading="lazy">
+          <div class="member-info">
+            <h3>د. سارة المنصور</h3>
+            <p>شريك - قانون الأعمال</p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#"><i class="fab fa-instagram"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="team-member hidden">
+          <img class="member-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1cd5cficPGBS6XNpxD_7RP5QECi6z6k2Ptg&s" alt="محامي" loading="lazy">
+          <div class="member-info">
+            <h3>د. خالد العتيبي</h3>
+            <p>مستشار أول - قانون الأسرة</p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#"><i class="fab fa-facebook-f"></i></a>
+            </div>
+          </div>
+        </div>
+        <div class="team-member hidden">
+          <img class="member-img" src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1cd5cficPGBS6XNpxD_7RP5QECi6z6k2Ptg&s" alt="محامية" loading="lazy">
+          <div class="member-info">
+            <h3>د. نورة الفهد</h3>
+            <p>محامية - حقوق الإنسان</p>
+            <div class="social-links">
+              <a href="#"><i class="fab fa-linkedin-in"></i></a>
+              <a href="#"><i class="fab fa-twitter"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- إحصائيات -->
+  <section class="stats-section">
+    <div class="container stats-container">
+      <div class="stat-block hidden">
+        <i class="fas fa-briefcase"></i>
+        <div class="num" data-target="850">0</div>
+        <p>قضية مكتملة</p>
+      </div>
+      <div class="stat-block hidden">
+        <i class="fas fa-user-tie"></i>
+        <div class="num" data-target="25">0</div>
+        <p>محامٍ خبير</p>
+      </div>
+      <div class="stat-block hidden">
+        <i class="fas fa-trophy"></i>
+        <div class="num" data-target="15">0</div>
+        <p>جائزة قانونية</p>
+      </div>
+      <div class="stat-block hidden">
+        <i class="fas fa-handshake"></i>
+        <div class="num" data-target="1200">0</div>
+        <p>عميل راضٍ</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- نموذج الاتصال -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <h2 class="section-title hidden">تواصل معنا</h2>
+      <p class="section-subtitle hidden">نحن هنا للإجابة على استفساراتك على مدار الساعة</p>
+      <div class="contact-form hidden">
+        <form id="contactForm" onsubmit="event.preventDefault(); alert('تم إرسال رسالتك، سنتواصل معك قريباً.');">
+          <div class="form-group">
+            <input type="text" placeholder="الاسم الكامل" required>
+          </div>
+          <div class="form-group">
+            <input type="email" placeholder="البريد الإلكتروني" required>
+          </div>
+          <div class="form-group">
+            <textarea rows="5" placeholder="رسالتك..." required></textarea>
+          </div>
+          <button type="submit" class="btn-primary">إرسال الرسالة</button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- الفوتر -->
+  <footer>
+    <div class="footer-content">
+      <p>© 2025 شركة الخبراء للمحاماة. جميع الحقوق محفوظة.</p>
+    </div>
+  </footer>
+
+  <!-- JavaScript للتفاعلات -->
+  <script>
+    (function() {
+      // 1. تأثير الآلة الكاتبة
+      const typingElement = document.getElementById('typing');
+      const phrases = ['العدالة أساس الحكم', 'خبراء في القانون', 'دفاع بلا حدود', 'شركاء النجاح'];
+      let i = 0;
+      let j = 0;
+      let currentPhrase = [];
+      let isDeleting = false;
+      let isEnd = false;
+
+      function type() {
+        if (!typingElement) return;
+        isEnd = false;
+        if (i < phrases.length) {
+          if (!isDeleting && j <= phrases[i].length) {
+            currentPhrase = phrases[i].substring(0, j);
+            typingElement.textContent = currentPhrase;
+            j++;
+          }
+
+          if (isDeleting && j <= phrases[i].length) {
+            currentPhrase = phrases[i].substring(0, j-1);
+            typingElement.textContent = currentPhrase;
+            j--;
+          }
+
+          if (j == phrases[i].length) {
+            isEnd = true;
+            isDeleting = true;
+          }
+
+          if (isDeleting && j === 0) {
+            currentPhrase = '';
+            isDeleting = false;
+            i++;
+            if (i == phrases.length) i = 0;
+          }
+        }
+        setTimeout(type, isEnd ? 2000 : 150);
+      }
+      type();
+
+      // 2. شريط التنقل يتغير عند التمرير
+      window.addEventListener('scroll', function() {
+        const navbar = document.getElementById('navbar');
+        if (window.scrollY > 50) {
+          navbar.classList.add('scrolled');
+        } else {
+          navbar.classList.remove('scrolled');
+        }
+      });
+
+      // 3. قائمة الهامبرغر
+      const menuToggle = document.getElementById('menu-toggle');
+      const navLinks = document.getElementById('nav-links');
+      const links = document.querySelectorAll('.nav-links a');
+
+      menuToggle.addEventListener('click', function() {
+        navLinks.classList.toggle('active');
+        // تغيير الأيقونة
+        const icon = menuToggle.querySelector('i');
+        if (navLinks.classList.contains('active')) {
+          icon.classList.remove('fa-bars');
+          icon.classList.add('fa-times');
+        } else {
+          icon.classList.remove('fa-times');
+          icon.classList.add('fa-bars');
+        }
+      });
+
+      // إغلاق القائمة عند النقر على أي رابط
+      links.forEach(link => {
+        link.addEventListener('click', () => {
+          navLinks.classList.remove('active');
+          const icon = menuToggle.querySelector('i');
+          icon.classList.remove('fa-times');
+          icon.classList.add('fa-bars');
+        });
+      });
+
+      // 4. عداد الأرقام (Scroll observer)
+      const counters = document.querySelectorAll('.stat-number, .num');
+      const speed = 200;
+
+      function startCounting(el) {
+        const target = parseInt(el.getAttribute('data-target'));
+        let count = 0;
+        const updateCounter = () => {
+          const increment = target / speed;
+          if (count < target) {
+            count += increment;
+            el.innerText = Math.ceil(count);
+            requestAnimationFrame(updateCounter);
+          } else {
+            el.innerText = target;
+          }
+        };
+        updateCounter();
+      }
+
+      // 5. Intersection Observer للكشف عن العناصر والعدادات
+      const hiddenElements = document.querySelectorAll('.hidden');
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('show');
+            // إذا كان العنصر يحمل عداداً
+            if (entry.target.classList.contains('stat-number') || entry.target.classList.contains('num')) {
+              startCounting(entry.target);
+            }
+            // لم نعد بحاجة لمراقبته بعد ظهوره
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.2, rootMargin: '0px 0px -50px 0px' }); // تحسين للأداء
+
+      hiddenElements.forEach(el => observer.observe(el));
+
+      // أيضاً نراقب أقسام الإحصائيات لبدء العد (تم تضمينها في hidden)
+      
+      // 6. تأثيرات إضافية: تحريك البطاقات مع حركة الماوس (اختياري، نطفئها على الجوال)
+      const cards = document.querySelectorAll('.service-card, .team-member');
+      if (window.innerWidth > 768) {
+        cards.forEach(card => {
+          card.addEventListener('mousemove', (e) => {
+            const rect = card.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            const rotateX = (y - centerY) / 20;
+            const rotateY = (centerX - x) / 20;
+            card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+          });
+          card.addEventListener('mouseleave', () => {
+            card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+          });
+        });
+      }
+    })();
+  </script>
+</body>
+</html>
