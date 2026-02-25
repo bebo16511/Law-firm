@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>ZICOLA · محاماة استثنائية | محتوى متكامل</title>
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&family=Cinzel:wght@400;700;900&display=swap" rel="stylesheet">
+  <!-- Font Awesome 6 -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- GSAP & ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <!-- Three.js import map -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.128.0/build/three.module.js"
+      }
+    }
+  </script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      overflow-x: hidden;
+      position: relative;
+      background-color: #030202;
+    }
+    body {
+      font-family: 'Cairo', sans-serif;
+      color: #f0ebe4;
+      line-height: 1.6;
+      position: relative;
+    }
+    /* ----- 3D canvas wrapper: absolute, follows active .model-space (unchanged) ----- */
+    #model-canvas-wrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 0;
+      height: 0;
+      overflow: hidden;
+      pointer-events: none;
+      z-index: 50;
+      background: transparent;
+      will-change: left, top, width, height;
+    }
+    #model-canvas-wrapper canvas {
+      display: block;
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: cover;
+    }
+
+    /* ----- content layer (below canvas, interactive) ----- */
+    .content {
+      position: relative;
+      z-index: 10;
+      pointer-events: auto;
+    }
+
+    /* header (unchanged) */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1.2rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      background: rgba(5, 4, 3, 0.7);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
+    }
+    .logo {
+      font-size: 2rem;
+      font-weight: 900;
+      font-family: 'Cinzel', serif;
+      color: #d4af37;
+      text-shadow: 0 0 20px rgba(212, 175, 55, 0.7);
+      letter-spacing: 2px;
+    }
+    .logo span {
+      color: #f5e9d8;
+      font-size: 1rem;
+      margin-right: 0.5rem;
+      font-family: 'Cairo', sans-serif;
+      opacity: 0.9;
+    }
+    nav ul {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+    }
+    nav ul li a {
+      color: #f0e9e0;
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 1.1rem;
+      padding: 0.5rem 0;
+      border-bottom: 2px solid transparent;
+      transition: 0.3s;
+    }
+    nav ul li a:hover {
+      color: #d4af37;
+      border-bottom-color: #d4af37;
+    }
+
+    /* sections */
+    section {
+      position: relative;
+      padding: 5rem 5%;
+      background: rgba(8, 6, 5, 0.65);
+      backdrop-filter: blur(8px);
+      margin: 1.5rem 0;
+      border-radius: 50px 0 50px 0;
+      border: 1px solid rgba(212, 175, 55, 0.2);
+    }
+    #hero {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      min-height: 100vh;
+      background: transparent;
+      backdrop-filter: none;
+    }
+    .hero-content {
+      max-width: 650px;
+      text-align: right;
+      background: rgba(0, 0, 0, 0.65);
+      backdrop-filter: blur(16px);
+      padding: 2.5rem;
+      border-radius: 30px;
+      border-right: 4px solid #d4af37;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.6);
+    }
+    .hero-content h1 {
+      font-size: clamp(4rem, 12vw, 7rem);
+      font-weight: 900;
+      letter-spacing: 4px;
+      line-height: 1.1;
+      color: #f5e9d8;
+      text-shadow: 0 0 20px #d4af37, 3px 3px 0 #1a1a1a;
+    }
+    .hero-content h2 {
+      font-size: clamp(2rem, 5vw, 3rem);
+      font-weight: 400;
+      margin: 0.5rem 0 1rem;
+      color: #e6d5b8;
+      border-bottom: 2px solid rgba(212, 175, 55, 0.5);
+      display: inline-block;
+    }
+    /* hero subtext */
+    .hero-stats {
+      display: flex;
+      gap: 2rem;
+      margin-top: 2rem;
+      font-weight: 600;
+      color: #d4af37;
+    }
+    .hero-stats span {
+      font-size: 1.5rem;
+      background: rgba(0,0,0,0.3);
+      padding: 0.5rem 1rem;
+      border-radius: 40px;
+      border: 1px solid rgba(212,175,55,0.3);
+    }
+
+    /* section layout: two columns (unchanged) */
+    .section-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: 2rem;
+    }
+    .section-text {
+      width: 50%;
+      text-align: right;
+      background: rgba(0, 0, 0, 0.4);
+      padding: 2rem;
+      border-radius: 40px;
+      box-shadow: 0 15px 30px rgba(0,0,0,0.6);
+    }
+    .model-space {
+      width: 50%;
+      min-height: 350px;
+      background: transparent;
+    }
+    .section-container.model-left .section-text {
+      order: 2;
+    }
+    .section-container.model-left .model-space {
+      order: 1;
+    }
+
+    /* enhanced content images */
+    .content-image {
+      margin-top: 2rem;
+      border-radius: 28px;
+      overflow: hidden;
+      border: 2px solid rgba(212, 175, 55, 0.4);
+      box-shadow: 0 20px 30px -10px black;
+      max-width: 100%;
+    }
+    .content-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+    .content-image:hover img {
+      transform: scale(1.03);
+    }
+    /* bullet lists */
+    .feature-list {
+      list-style: none;
+      margin-top: 1.5rem;
+    }
+    .feature-list li {
+      margin-bottom: 0.8rem;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+    }
+    .feature-list li i {
+      color: #d4af37;
+      font-size: 1.3rem;
+      width: 1.8rem;
+    }
+    .highlight-stat {
+      display: inline-block;
+      background: rgba(212,175,55,0.15);
+      border-right: 3px solid #d4af37;
+      padding: 0.3rem 1rem;
+      margin: 1rem 0;
+      font-weight: 600;
+    }
+
+    /* mobile */
+    @media (max-width: 992px) {
+      .section-container {
+        flex-direction: column;
+      }
+      .section-text, .model-space {
+        width: 100%;
+      }
+      .model-space {
+        min-height: 400px;
+        margin-top: 1rem;
+      }
+    }
+
+    .section-title {
+      font-size: 3rem;
+      margin-bottom: 2rem;
+      color: #d4af37;
+      text-align: center;
+      letter-spacing: 2px;
+      text-shadow: 0 0 15px rgba(212,175,55,0.5);
+    }
+    .section-title::after {
+      content: '';
+      display: block;
+      width: 120px;
+      height: 3px;
+      background: linear-gradient(90deg, #d4af37, transparent);
+      margin: 0.8rem auto 0;
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    .card {
+      background: rgba(20, 17, 15, 0.9);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 28px;
+      padding: 1.8rem 1.2rem;
+      box-shadow: 0 20px 30px -10px #000000cc;
+      transition: transform 0.4s, border-color 0.3s;
+      color: #f0e9e0;
+      text-align: center;
+    }
+    .card:hover {
+      transform: translateY(-10px) scale(1.02);
+      border-color: #d4af37;
+      box-shadow: 0 30px 50px -10px #d4af3740;
+    }
+    .card-image {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(145deg, #d4af37, #7a6230);
+      border-radius: 50%;
+      margin: 0 auto 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      color: #0b0a0a;
+      border: 3px solid #d4af37;
+      box-shadow: 0 0 30px rgba(212,175,55,0.7);
+    }
+    .contact-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+    }
+    .contact-info {
+      background: rgba(20, 17, 15, 0.8);
+      padding: 2rem;
+      border-radius: 28px;
+      border-right: 4px solid #d4af37;
+    }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 1rem 1.2rem;
+      margin-bottom: 1.2rem;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid #3a352e;
+      border-radius: 40px;
+      color: #f0e9e0;
+      font-family: 'Cairo', sans-serif;
+    }
+    .contact-form button {
+      background: #d4af37;
+      color: #0b0a0a;
+      border: none;
+      padding: 1rem 2.5rem;
+      font-size: 1.2rem;
+      font-weight: 700;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 5px 20px #d4af3766;
+    }
+    footer {
+      background: rgba(5, 4, 3, 0.95);
+      padding: 3rem 5% 2rem;
+      border-top: 1px solid #d4af3722;
+      text-align: center;
+    }
+    @media (max-width: 768px) {
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <!-- 3D canvas wrapper – ABSOLUTELY UNCHANGED (same id, structure) -->
+  <div id="model-canvas-wrapper"></div>
+
+  <!-- content layer with enriched text & visuals -->
+  <div class="content">
+    <header>
+      <div class="logo">ZICOLA <span>مكتب المحاماة</span></div>
+      <nav>
+        <ul>
+          <li><a href="#hero">الرئيسية</a></li>
+          <li><a href="#about">من نحن</a></li>
+          <li><a href="#services">خدماتنا</a></li>
+          <li><a href="#why">لماذا نحن</a></li>
+          <li><a href="#team">الفريق</a></li>
+          <li><a href="#contact">اتصال</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <!-- hero (model-space on right) – enriched stats -->
+      <section id="hero">
+        <div class="hero-content">
+          <h1>زيكولا</h1>
+          <h2>التوازن في العدالة</h2>
+          <p style="font-size:1.4rem; margin-bottom:1.5rem;">قوة القانون • بصمة إنسانية • إرث من الثقة</p>
+          <p style="opacity:0.9;">نحن نمثل كبار الشركات وقادة الصناعة منذ ثلاثة عقود. مزيج فريد بين الفقه التقليدي والاستراتيجيات الحديثة.</p>
+          <div class="hero-stats">
+            <span>+٣٠٠ قضية</span>
+            <span>+٢٥ خبيراً</span>
+            <span>٩٥٪ نجاح</span>
+          </div>
+        </div>
+        <!-- empty model-space for canvas -->
+        <div class="model-space"></div>
+      </section>
+
+      <!-- about (model left) – expanded with image and bullet points -->
+      <section id="about">
+        <div class="section-container model-left">
+          <div class="section-text">
+            <h2 class="section-title" style="text-align:right;">من نحن</h2>
+            <p style="font-size:1.3rem; line-height:1.8;">نحن في <strong style="color:#d4af37;">ZICOLA</strong> نؤمن بأن العدالة فن ومسؤولية. تأسس المكتب عام ١٩٩٥ على يد المحامي محمد الزيكولا، ومنذ ذلك الحين ونحن نصوغ التاريخ القانوني للمملكة.</p>
+            <p style="margin-top:1rem;">ندمج بين الخبرة العميقة والرؤية الحديثة، ونقدم استشارات للشركات المدرجة في السوق المالية، بالإضافة إلى تمثيل كبار المسؤولين في قضايا الجرائم الاقتصادية.</p>
+            
+            <ul class="feature-list">
+              <li><i class="fas fa-scale-balanced"></i> <strong>خبرة قضائية:</strong> أكثر من ٣٠٠٠ قضية أمام المحاكم الجزئية والعليا.</li>
+              <li><i class="fas fa-building"></i> <strong>مكتب دولي:</strong> شراكات في لندن ودبي ونيويورك.</li>
+              <li><i class="fas fa-user-shield"></i> <strong>سرية تامة:</strong> نحمي سمعة عملائنا كدرع.</li>
+            </ul>
+
+            <!-- new image inside content -->
+            <div class="content-image">
+              <img src="https://images.unsplash.com/photo-1589391886645-dc41af9231f6?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="قاعة محكمة فخمة">
+            </div>
+          </div>
+          <div class="model-space"></div>
+        </div>
+      </section>
+
+      <!-- services (model right) – intro paragraph + cards, and an image before cards -->
+      <section id="services">
+        <div class="section-container">
+          <div class="section-text">
+            <h2 class="section-title" style="text-align:right;">خدماتنا القانونية</h2>
+            <p style="margin-bottom:1.5rem;">نغطي كامل الطيف القانوني بفريق متعدد التخصصات. كل قضية تحصل على رعاية استثنائية من شريك مكتب.</p>
+            
+            <!-- subtle image banner -->
+            <div class="content-image" style="margin-bottom:2rem;">
+              <img src="https://images.unsplash.com/photo-1505664194779-5d0c3b7c8b7d?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="اجتماع مجلس إدارة">
+            </div>
+
+            <div class="card-grid">
+              <div class="card"><div class="card-image"><i class="fas fa-gavel"></i></div><h3>القانون التجاري</h3><p>استشارات وعقود وشركات، صفقات الاندماج والاستحواذ.</p></div>
+              <div class="card"><div class="card-image"><i class="fas fa-balance-scale"></i></div><h3>القانون الجنائي</h3><p>دفاع شرس في الجرائم الاقتصادية وغسل الأموال.</p></div>
+              <div class="card"><div class="card-image"><i class="fas fa-file-contract"></i></div><h3>القانون المدني</h3><p>منازعات ملكية، عقود مقاولات، تعويضات كبرى.</p></div>
+              <div class="card"><div class="card-image"><i class="fas fa-family"></i></div><h3>الأحوال الشخصية</h3><p>قضايا الأسرة، الحضانة، والمواريث.</p></div>
+            </div>
+          </div>
+          <div class="model-space"></div>
+        </div>
+      </section>
+
+      <!-- why (model left) – stronger credibility -->
+      <section id="why">
+        <div class="section-container model-left">
+          <div class="section-text">
+            <h2 class="section-title" style="text-align:right;">لماذا زيكولا</h2>
+            <div class="highlight-stat">أكثر من ٢٥ عاماً من الريادة</div>
+            <div class="card-grid" style="margin-top:1rem;">
+              <div class="card"><div class="card-image"><i class="fas fa-hand-fist"></i></div><h3>خبرة ممتدة</h3><p>أكثر من ٢٥ عاماً في صياغة التشريعات وتمثيل كبرى الشركات.</p></div>
+              <div class="card"><div class="card-image"><i class="fas fa-medal"></i></div><h3>التزام كامل</h3><p>السرية والأمانة هما جوهر عملنا – موثوقون من الهيئات الحكومية.</p></div>
+              <div class="card"><div class="card-image"><i class="fas fa-chart-line"></i></div><h3>نتائج ملموسة</h3><p>نسبة نجاح ٩٥٪ في الطعون التمييزية، وأكثر من مليار ريال حصلنا عليها للعملاء.</p></div>
+            </div>
+            <!-- extra image -->
+            <div class="content-image">
+              <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="محامٍ أمام القضاء">
+            </div>
+          </div>
+          <div class="model-space"></div>
+        </div>
+      </section>
+
+      <!-- team (model right) – enriched with photos (card images) and brief -->
+      <section id="team">
+        <div class="section-container">
+          <div class="section-text">
+            <h2 class="section-title" style="text-align:right;">فريق المحامين</h2>
+            <p style="margin-bottom:1.5rem;">نخبة من المحامين المتخصصين، بعضهم شغل مناصب قضائية واستشارية عليا.</p>
+            <div class="card-grid">
+              <div class="card"><div class="card-image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsWxL4I28blpr_WTgIvStDmpDfQ3fGZgyDNA&s" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" alt="اسم الشركاء ان وجد"></div><h3>1</h3><p>الشريك المؤسس، خبير قانون الشركات.</p></div>
+              <div class="card"><div class="card-image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsWxL4I28blpr_WTgIvStDmpDfQ3fGZgyDNA&s" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" alt="اسم الشركاء ان وجد"></div><h3>2</h3><p>قانون تجاري، دكتوراه من لندن.</p></div>
+              <div class="card"><div class="card-image"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRsWxL4I28blpr_WTgIvStDmpDfQ3fGZgyDNA&s" style="width:100%; height:100%; border-radius:50%; object-fit:cover;" alt="اسم الشركاء ان وجد"></div><h3>3</h3><p>قضايا جنائية، مستشار سابق في النيابة.</p></div>
+            </div>
+          </div>
+          <div class="model-space"></div>
+        </div>
+      </section>
+
+      <!-- contact (model left) – enhanced with map visual and office details -->
+      <section id="contact">
+        <div class="section-container model-left">
+          <div class="section-text">
+            <h2 class="section-title" style="text-align:right;">اتصل بنا</h2>
+            <div class="contact-grid">
+              <div class="contact-info">
+                <p><span style="font-size:2rem;">📍</span> العنوااان</p>
+                <p><span style="font-size:2rem;">📞</span> رقم الشريكة</p>
+                <p><span style="font-size:2rem;">✉️</span> info@zicola.com.sa</p>
+                <p style="margin-top:2rem;"><i class="fas fa-clock" style="color:#d4af37;"></i> ٨:٠٠ صباحاً – ٨:٠٠ مساءً</p>
+                <!-- small image: building silhouette -->
+                <div class="content-image" style="margin-top:1.5rem;">
+                  <img src="https://images.unsplash.com/photo-1589386417686-0d34b5903d23?ixlib=rb-4.0.3&auto=format&fit=crop&w=800&q=80" alt="برج المملكة">
+                </div>
+              </div>
+              <div class="contact-form">
+                <form><input placeholder="الاسم الكامل"><input placeholder="البريد الإلكتروني"><textarea rows="4" placeholder="رسالتك..."></textarea><button type="submit">إرسال</button></form>
+              </div>
+            </div>
+          </div>
+          <div class="model-space"></div>
+        </div>
+      </section>
+    </main>
+
+    <footer> <div class="logo">ZICOLA</div> <p>© 2026 – جميع الحقوق محفوظة – شركة محاماة دولية</p> </footer>
+  </div>
+
+  <!-- Three.js script (identical structure, untouched) -->
+  <script type="module">
+    import * as THREE from 'three';
+    import gsap from 'https://cdn.skypack.dev/gsap@3.12.5';
+
+    // --- setup: get wrapper, create renderer with transparent background ---
+    const wrapper = document.getElementById('model-canvas-wrapper');
+    const scene = new THREE.Scene();
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true, powerPreference: "high-performance" });
+    renderer.setSize(0, 0); // start empty
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setClearColor(0x000000, 0); // transparent
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    
+    // style canvas to fill wrapper
+    renderer.domElement.style.width = '100%';
+    renderer.domElement.style.height = '100%';
+    renderer.domElement.style.display = 'block';
+    wrapper.appendChild(renderer.domElement);
+
+    // --- camera (fixed, will adjust aspect dynamically) ---
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 1000);
+    camera.position.set(0, 1.2, 8);
+    camera.lookAt(0, 0.5, 0);
+
+    // --- lighting (same as before, cinematic gold glow) ---
+    const ambient = new THREE.AmbientLight(0x404060);
+    scene.add(ambient);
+    const keyLight = new THREE.DirectionalLight(0xfff5e6, 1.8);
+    keyLight.position.set(3, 6, 5);
+    keyLight.castShadow = true;
+    keyLight.shadow.mapSize.width = 1024;
+    keyLight.shadow.mapSize.height = 1024;
+    scene.add(keyLight);
+    const fillLight = new THREE.DirectionalLight(0xcce0ff, 0.8);
+    fillLight.position.set(-4, 2, 4);
+    scene.add(fillLight);
+    const goldLight1 = new THREE.PointLight(0xd4af37, 1.2, 10);
+    goldLight1.position.set(1, 2, 2);
+    scene.add(goldLight1);
+    const goldLight2 = new THREE.PointLight(0xd4af37, 0.8, 12);
+    goldLight2.position.set(-1, 1.5, 3);
+    scene.add(goldLight2);
+    const backLight = new THREE.PointLight(0x446688, 0.9);
+    backLight.position.set(0, 1, -5);
+    scene.add(backLight);
+
+    // --- build the scale model (same as before) ---
+    const modelGroup = new THREE.Group();
+    const goldMat = new THREE.MeshStandardMaterial({ color: 0xd4af37, emissive: 0x442a0a, roughness: 0.25, metalness: 0.9, emissiveIntensity: 0.6 });
+    const darkMetalMat = new THREE.MeshStandardMaterial({ color: 0x6a5e4e, roughness: 0.4, metalness: 0.7, emissive: 0x111111 });
+    const panMat = new THREE.MeshStandardMaterial({ color: 0xbfa87e, roughness: 0.3, metalness: 0.6, emissive: 0x221100 });
+    const chainMat = new THREE.MeshStandardMaterial({ color: 0xccc8b5, roughness: 0.5, metalness: 0.5, emissive: 0x111111 });
+
+    const base = new THREE.Mesh(new THREE.CylinderGeometry(0.3, 0.5, 0.4, 32), darkMetalMat);
+    base.position.y = -0.9;
+    base.castShadow = true; base.receiveShadow = true;
+    modelGroup.add(base);
+
+    const column = new THREE.Mesh(new THREE.CylinderGeometry(0.14, 0.14, 2.2, 16), goldMat);
+    column.position.y = 0.3;
+    column.castShadow = true; column.receiveShadow = true;
+    modelGroup.add(column);
+
+    const ringGeo = new THREE.TorusGeometry(0.2, 0.03, 16, 32);
+    const ring1 = new THREE.Mesh(ringGeo, goldMat);
+    ring1.rotation.x = Math.PI/2;
+    ring1.position.y = 1.0;
+    ring1.castShadow = true;
+    modelGroup.add(ring1);
+    const ring2 = new THREE.Mesh(ringGeo, goldMat);
+    ring2.rotation.x = Math.PI/2;
+    ring2.position.y = -0.4;
+    ring2.castShadow = true;
+    modelGroup.add(ring2);
+
+    const pivot = new THREE.Mesh(new THREE.SphereGeometry(0.25, 32), goldMat);
+    pivot.position.y = 1.45;
+    pivot.castShadow = true;
+    modelGroup.add(pivot);
+
+    const beam = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.09, 3.0, 12), goldMat);
+    beam.position.y = 1.45;
+    beam.castShadow = true;
+    modelGroup.add(beam);
+
+    const finialGeo = new THREE.SphereGeometry(0.16, 24);
+    const leftFin = new THREE.Mesh(finialGeo, goldMat);
+    leftFin.position.set(-1.5, 1.45, 0);
+    leftFin.castShadow = true;
+    modelGroup.add(leftFin);
+    const rightFin = new THREE.Mesh(finialGeo, goldMat);
+    rightFin.position.set(1.5, 1.45, 0);
+    rightFin.castShadow = true;
+    modelGroup.add(rightFin);
+
+    function addChain(x, yStart) {
+      for (let i = 0; i < 4; i++) {
+        const link = new THREE.Mesh(new THREE.CylinderGeometry(0.05, 0.05, 0.22, 8), chainMat);
+        link.position.set(x, yStart - i*0.22, 0);
+        link.castShadow = true;
+        modelGroup.add(link);
+      }
+    }
+    addChain(-1.4, 1.1);
+    addChain(1.4, 1.1);
+
+    const panGeo = new THREE.CylinderGeometry(0.6, 0.65, 0.15, 32);
+    const leftPan = new THREE.Mesh(panGeo, panMat);
+    leftPan.position.set(-1.4, 0.2, 0);
+    leftPan.castShadow = true; leftPan.receiveShadow = true;
+    modelGroup.add(leftPan);
+    const rightPan = new THREE.Mesh(panGeo, panMat);
+    rightPan.position.set(1.4, 0.2, 0);
+    rightPan.castShadow = true; rightPan.receiveShadow = true;
+    modelGroup.add(rightPan);
+
+    const gemMat = new THREE.MeshStandardMaterial({ color: 0xe0b85c, emissive: 0x553311, emissiveIntensity: 1.2 });
+    const gem = new THREE.Mesh(new THREE.OctahedronGeometry(0.14), gemMat);
+    gem.position.set(0, 1.62, 0);
+    gem.castShadow = true;
+    modelGroup.add(gem);
+
+    scene.add(modelGroup);
+
+    // particles (ambient dust)
+    const particleCount = 400;
+    const particlesGeo = new THREE.BufferGeometry();
+    const posArray = new Float32Array(particleCount * 3);
+    for (let i = 0; i < particleCount; i++) {
+      posArray[i*3] = (Math.random() - 0.5) * 16;
+      posArray[i*3+1] = (Math.random() - 0.5) * 12;
+      posArray[i*3+2] = (Math.random() - 0.5) * 10 - 2;
+    }
+    particlesGeo.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+    const particlesMat = new THREE.PointsMaterial({ color: 0xd4af37, size: 0.03, transparent: true, opacity: 0.12, blending: THREE.AdditiveBlending });
+    const particles = new THREE.Points(particlesGeo, particlesMat);
+    scene.add(particles);
+
+    // --- idle floating animation on modelGroup (independent) ---
+    gsap.timeline({ repeat: -1, yoyo: true, ease: "sine.inOut" })
+      .to(modelGroup.rotation, { z: 0.04, duration: 2.8 }, 0)
+      .to(modelGroup.rotation, { z: -0.04, duration: 2.8 }, 2.8);
+    gsap.timeline({ repeat: -1, yoyo: true, ease: "sine.inOut" })
+      .to(modelGroup.scale, { x: 1.02, y: 1.02, z: 1.02, duration: 3.2 }, 0)
+      .to(modelGroup.scale, { x: 0.98, y: 0.98, z: 0.98, duration: 3.2 }, 3.2);
+
+    // --- scroll‑active logic: find closest section center, get its .model-space, move wrapper ---
+    const sections = ['hero', 'about', 'services', 'why', 'team', 'contact'].map(id => document.getElementById(id));
+    
+    let lastWidth = 0, lastHeight = 0;
+    let activeAnimation = null;
+
+    function getModelSpaceElement(section) {
+      return section.querySelector('.model-space');
+    }
+
+    function moveWrapperToTarget(targetEl) {
+      if (!targetEl) return;
+      const rect = targetEl.getBoundingClientRect();
+      const scrollX = window.scrollX || window.pageXOffset;
+      const scrollY = window.scrollY || window.pageYOffset;
+      
+      // absolute position relative to document
+      const left = rect.left + scrollX;
+      const top = rect.top + scrollY;
+      const width = rect.width;
+      const height = rect.height;
+
+      // kill any ongoing animation
+      if (activeAnimation) activeAnimation.kill();
+      
+      // animate wrapper to exact bounds
+      activeAnimation = gsap.to(wrapper, {
+        left: left,
+        top: top,
+        width: width,
+        height: height,
+        duration: 1.1,
+        ease: "power2.out",
+        overwrite: true
+      });
+    }
+
+    function updateActiveSection() {
+      const viewportCenter = window.scrollY + window.innerHeight / 2;
+      let closestSection = null;
+      let minDist = Infinity;
+
+      sections.forEach(section => {
+        if (!section) return;
+        const rect = section.getBoundingClientRect();
+        const absTop = rect.top + window.scrollY;
+        const absBottom = absTop + rect.height;
+        const secCenter = (absTop + absBottom) / 2;
+        const dist = Math.abs(viewportCenter - secCenter);
+        if (dist < minDist) {
+          minDist = dist;
+          closestSection = section;
+        }
+      });
+
+      if (closestSection) {
+        const modelSpace = getModelSpaceElement(closestSection);
+        if (modelSpace) moveWrapperToTarget(modelSpace);
+      }
+    }
+
+    // initial positioning
+    window.addEventListener('load', () => {
+      updateActiveSection();
+    });
+
+    window.addEventListener('scroll', () => {
+      requestAnimationFrame(updateActiveSection);
+    });
+
+    window.addEventListener('resize', () => {
+      // re-evaluate active section after resize
+      updateActiveSection();
+    });
+
+    // --- render loop: update camera aspect and renderer size to match wrapper ---
+    function animate() {
+      requestAnimationFrame(animate);
+
+      // fit renderer to wrapper size
+      const wrapperRect = wrapper.getBoundingClientRect();
+      const w = wrapperRect.width;
+      const h = wrapperRect.height;
+      if (w > 0 && h > 0 && (w !== lastWidth || h !== lastHeight)) {
+        renderer.setSize(w, h);
+        camera.aspect = w / h;
+        camera.updateProjectionMatrix();
+        lastWidth = w;
+        lastHeight = h;
+      }
+
+      // subtle particle rotation
+      particles.rotation.y += 0.0002;
+
+      renderer.render(scene, camera);
+    }
+    animate();
+
+    // header style on scroll
+    window.addEventListener('scroll', () => {
+      const header = document.querySelector('header');
+      header.style.background = window.scrollY > 50 ? 'rgba(5,4,3,0.95)' : 'rgba(10,8,7,0.7)';
+    });
+  </script>
+</body>
+</html>
