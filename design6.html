@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+  <title>زيكولا · مكتب محاماة إبداعي</title>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <!-- Google Fonts: Tajawal للعربية + Playfair للزخرفة (للأجنبي) ولكننا نعتمد على Tajawal في كل النصوص -->
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <!-- AOS (Animate on Scroll) -->
+  <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Tajawal', 'Inter', sans-serif;
+      background: #0b0c10;
+      color: #eaeef2;
+      overflow-x: hidden;
+      line-height: 1.6;
+      text-align: right;
+    }
+
+    /* elegant dark law theme */
+    h1, h2, h3 {
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .section-title {
+      font-family: 'Tajawal', 'Playfair Display', serif;
+      font-size: clamp(2.5rem, 6vw, 4rem);
+      background: linear-gradient(135deg, #d4af37, #f5f0e6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 1rem;
+      line-height: 1.3;
+    }
+
+    .gold-accent {
+      color: #d4af37;
+    }
+
+    /* navigation */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      padding: 1.5rem 5%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+      mix-blend-mode: exclusion;
+      backdrop-filter: blur(8px);
+      background: rgba(10, 10, 10, 0.2);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.2);
+      transition: all 0.4s ease;
+    }
+
+    .logo {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      background: linear-gradient(45deg, #fff8e7, #d4af37);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .nav-links a {
+      color: #f0f0f0;
+      margin-right: 2.5rem;  /* تعديل لـ RTL */
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.2rem;
+      position: relative;
+      padding-bottom: 5px;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      right: 0;   /* RTL */
+      width: 0%;
+      height: 2px;
+      background: #d4af37;
+      transition: 0.3s;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* HERO video section */
+    .hero {
+      height: 100vh;
+      width: 100%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    #hero-video {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      min-width: 100%;
+      min-height: 100%;
+      width: auto;
+      height: auto;
+      transform: translate(-50%, -50%);
+      object-fit: cover;
+      filter: brightness(0.4) saturate(1.3);
+      z-index: -2;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background: radial-gradient(circle at center, transparent 0%, #0b0c10 90%);
+      z-index: -1;
+    }
+
+    .hero-content {
+      max-width: 1000px;
+      padding: 0 1rem;
+      transform: translateY(-2vh);
+    }
+
+    .hero-content h1 {
+      font-size: clamp(3.5rem, 10vw, 6.5rem);
+      font-family: 'Tajawal', 'Playfair Display', serif;
+      font-weight: 900;
+      line-height: 1.2;
+      text-shadow: 0 0 30px rgba(0,0,0,0.7);
+    }
+
+    .hero-content p {
+      font-size: 1.5rem;
+      margin: 2rem 0 3rem;
+      color: #dddddd;
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 1.2rem 3rem;
+      background: transparent;
+      border: 2px solid #d4af37;
+      color: #d4af37;
+      font-weight: 700;
+      text-decoration: none;
+      letter-spacing: 1px;
+      font-size: 1.3rem;
+      transition: 0.3s;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.3);
+      backdrop-filter: blur(5px);
+    }
+
+    .btn:hover {
+      background: #d4af37;
+      color: #0b0c10;
+      box-shadow: 0 0 40px #d4af37;
+    }
+
+    /* sections general */
+    section {
+      padding: 5rem 5%;
+    }
+
+    /* about with stat counters */
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    .about-text p {
+      font-size: 1.3rem;
+      color: #b0b7c0;
+      margin: 1.5rem 0;
+    }
+
+    .stats {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+
+    .stat-item {
+      text-align: center;
+      padding: 1.8rem 1rem;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(212,175,55,0.2);
+      backdrop-filter: blur(8px);
+      transition: 0.4s;
+    }
+
+    .stat-item:hover {
+      transform: scale(1.05);
+      border-color: #d4af37;
+      box-shadow: 0 20px 30px -10px rgba(212,175,55,0.3);
+    }
+
+    .stat-number {
+      font-size: 3.2rem;
+      font-weight: 800;
+      color: #d4af37;
+      line-height: 1;
+    }
+
+    /* MOVING ROOM – 3D CUBE GALLERY */
+    .room-section {
+      background: #050608;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+
+    .cube-container {
+      width: 280px;
+      height: 280px;
+      margin: 3rem auto;
+      perspective: 1200px;
+      cursor: grab;
+    }
+
+    .cube {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transform: rotateX(-10deg) rotateY(20deg);
+      transition: transform 0.1s ease-out;
+      animation: subtle-spin 30s infinite linear;
+    }
+
+    @keyframes subtle-spin {
+      0% { transform: rotateX(-10deg) rotateY(0deg); }
+      100% { transform: rotateX(-10deg) rotateY(360deg); }
+    }
+
+    .cube__face {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      border: 3px solid rgba(212, 175, 55, 0.6);
+      box-shadow: inset 0 0 50px rgba(0,0,0,0.5), 0 0 30px rgba(212,175,55,0.3);
+      backface-visibility: visible;
+    }
+
+    .cube__face--front  { transform: rotateY(0deg) translateZ(140px); background-image: url('https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=600&auto=format&fit=crop'); }
+    .cube__face--back   { transform: rotateY(180deg) translateZ(140px); background-image: url('https://images.unsplash.com/photo-1505664194779-4d2d4c8a5d6e?w=600&auto=format&fit=crop'); }
+    .cube__face--right  { transform: rotateY(90deg) translateZ(140px); background-image: url('https://images.unsplash.com/photo-1507676184212-d03ab07a01bf?w=600&auto=format&fit=crop'); }
+    .cube__face--left   { transform: rotateY(-90deg) translateZ(140px); background-image: url('https://images.unsplash.com/photo-1575505586569-646b2ca898fc?w=600&auto=format&fit=crop'); }
+    .cube__face--top    { transform: rotateX(90deg) translateZ(140px); background-image: url('https://images.unsplash.com/photo-1521791055366-0d553872125f?w=600&auto=format&fit=crop'); }
+    .cube__face--bottom { transform: rotateX(-90deg) translateZ(140px); background-image: url('https://images.unsplash.com/photo-1450101499163-c8848c66ca85?w=600&auto=format&fit=crop'); }
+
+    /* services cards */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2rem;
+      margin-top: 3rem;
+    }
+
+    .service-card {
+      background: rgba(20, 22, 27, 0.8);
+      backdrop-filter: blur(5px);
+      border: 1px solid #2e2e2e;
+      padding: 2.5rem 1.2rem;
+      transition: 0.3s;
+      text-align: center;
+      border-radius: 4px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .service-card i {
+      font-size: 3rem;
+      color: #d4af37;
+      margin-bottom: 1.5rem;
+    }
+
+    .service-card h3 {
+      font-size: 2rem;
+      margin-bottom: 1rem;
+    }
+
+    .service-card p {
+      color: #9aa1a9;
+    }
+
+    .service-card:hover {
+      border-color: #d4af37;
+      transform: translateY(-15px) scale(1.02);
+    }
+
+    /* team creative hover */
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2.5rem;
+    }
+
+    .member {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 25px 35px -10px black;
+    }
+
+    .member img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      filter: grayscale(50%) brightness(0.8);
+      transition: 0.6s;
+    }
+
+    .member:hover img {
+      transform: scale(1.1);
+      filter: grayscale(0%) brightness(1);
+    }
+
+    .member-info {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, #0b0c10 80%);
+      padding: 2rem 1rem 1rem;
+      transform: translateY(60%);
+      transition: 0.4s;
+      text-align: center;
+    }
+
+    .member:hover .member-info {
+      transform: translateY(0);
+    }
+
+    .member-info h3 {
+      font-size: 1.9rem;
+    }
+
+    .member-info p {
+      color: #d4af37;
+      font-weight: 700;
+    }
+
+    .social-links a {
+      color: white;
+      margin: 0 0.5rem;
+      font-size: 1.3rem;
+    }
+
+    /* video showcase */
+    .video-showcase {
+      background: #000;
+      position: relative;
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+    }
+
+    #promo-video {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      opacity: 0.4;
+    }
+
+    .video-content {
+      position: relative;
+      z-index: 2;
+      max-width: 800px;
+    }
+
+    .video-content h2 {
+      font-size: 3.2rem;
+    }
+
+    /* contact form */
+    .contact-form {
+      max-width: 700px;
+      margin: 3rem auto 0;
+      display: grid;
+      gap: 1.5rem;
+    }
+
+    .contact-form input, .contact-form textarea {
+      width: 100%;
+      padding: 1.3rem;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid #2c2c2c;
+      color: white;
+      font-size: 1.2rem;
+      transition: 0.3s;
+      border-radius: 0;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    .contact-form input:focus, .contact-form textarea:focus {
+      border-color: #d4af37;
+      outline: none;
+      box-shadow: 0 0 20px rgba(212,175,55,0.3);
+    }
+
+    .contact-form button {
+      width: fit-content;
+      justify-self: center;
+      background: transparent;
+      border: 2px solid #d4af37;
+      color: #d4af37;
+      padding: 1rem 3.5rem;
+      font-weight: 700;
+      font-size: 1.4rem;
+      cursor: pointer;
+      transition: 0.3s;
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    .contact-form button:hover {
+      background: #d4af37;
+      color: black;
+    }
+
+    footer {
+      text-align: center;
+      padding: 2.5rem 5%;
+      border-top: 1px solid rgba(212,175,55,0.2);
+      font-size: 1.2rem;
+    }
+
+    /* responsive adjustments */
+    @media (max-width: 800px) {
+      .navbar {
+        padding: 1rem 4%;
+      }
+      .logo {
+        font-size: 1.8rem;
+      }
+      .nav-links a {
+        font-size: 1rem;
+        margin-right: 1.2rem;
+      }
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+      .stats {
+        gap: 1rem;
+      }
+      .stat-item {
+        padding: 1.2rem 0.5rem;
+      }
+      .stat-number {
+        font-size: 2.5rem;
+      }
+      .cube-container {
+        width: 220px;
+        height: 220px;
+      }
+      .cube__face {
+        border-width: 2px;
+      }
+      .cube__face--front  { transform: rotateY(0deg) translateZ(110px); }
+      .cube__face--back   { transform: rotateY(180deg) translateZ(110px); }
+      .cube__face--right  { transform: rotateY(90deg) translateZ(110px); }
+      .cube__face--left   { transform: rotateY(-90deg) translateZ(110px); }
+      .cube__face--top    { transform: rotateX(90deg) translateZ(110px); }
+      .cube__face--bottom { transform: rotateX(-90deg) translateZ(110px); }
+
+      .hero-content p {
+        font-size: 1.2rem;
+      }
+      .btn {
+        padding: 1rem 2rem;
+        font-size: 1.1rem;
+      }
+    }
+
+    /* very small devices */
+    @media (max-width: 480px) {
+      .navbar {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      .nav-links a {
+        margin: 0 0.8rem;
+      }
+      .section-title {
+        font-size: 2.2rem;
+      }
+      .team-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="logo">زيكولا</div>
+    <div class="nav-links">
+      <a href="#">الرئيسية</a>
+      <a href="#">الخبرات</a>
+      <a href="#">الفريق</a>
+      <a href="#">اتصل بنا</a>
+    </div>
+  </nav>
+
+  <!-- Hero with video -->
+  <section class="hero">
+    <video autoplay muted loop playsinline id="hero-video">
+      <source src="1.mp4" type="video/mp4">
+    </video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content" data-aos="fade-up" data-aos-duration="1500">
+      <h1>العدالة<br><span class="gold-accent">فننا</span></h1>
+      <p>مكتب محاماة بخبرة عالية المستوى — إبداعي، لا يكل، دقيق.</p>
+      <a href="#" class="btn">تواصل معنا</a>
+    </div>
+  </section>
+
+  <!-- About + creative stats -->
+  <section data-aos="fade-up">
+    <div class="about-grid">
+      <div class="about-text">
+        <h2 class="section-title">حيث يلتقي الإرث بالابتكار</h2>
+        <p>لأكثر من ثلاثة عقود، دافعت زيكولا عن شركات  ونشطاء حقوق الإنسان على حد سواء. نحن لا نمارس القانون فقط — بل نشكله.</p>
+        <p>يجمع نهجنا بين التكنولوجيا القانونية المتطورة والمرافعة التقليدية. كل قضية هي تحفة فنية.</p>
+      </div>
+      <div class="stats">
+        <div class="stat-item" data-aos="zoom-in" data-aos-delay="100">
+          <div class="stat-number" data-target="350">0</div>
+          <p>انتصار قضائي</p>
+        </div>
+        <div class="stat-item" data-aos="zoom-in" data-aos-delay="200">
+          <div class="stat-number" data-target="$2.5B">$0</div>
+          <p>تم استردادها للعملاء</p>
+        </div>
+        <div class="stat-item" data-aos="zoom-in" data-aos-delay="300">
+          <div class="stat-number" data-target="47">0</div>
+          <p>محامٍ من الطراز الأول</p>
+        </div>
+        <div class="stat-item" data-aos="zoom-in" data-aos-delay="400">
+          <div class="stat-number" data-target="128">0</div>
+          <p>جائزة دولية</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MOVING ROOM (3D cube gallery) -->
+  <section class="room-section" id="moving-room">
+    <h2 class="section-title" data-aos="fade-down">غرفة العدالة 360°</h2>
+    <p class="gold-accent" style="margin-bottom: 2rem;">حرك المؤشر لتدوير الغرفة — كل وجه يحكي قصة</p>
+    <div class="cube-container" id="cubeContainer">
+      <div class="cube" id="cube">
+        <div class="cube__face cube__face--front"></div>
+        <div class="cube__face cube__face--back"></div>
+        <div class="cube__face cube__face--right"></div>
+        <div class="cube__face cube__face--left"></div>
+        <div class="cube__face cube__face--top"></div>
+        <div class="cube__face cube__face--bottom"></div>
+      </div>
+    </div>
+    <p style="margin-top: 2rem; color: #aaa;"><i class="fas fa-expand-alt gold-accent"></i> اسحب للاستكشاف / دوران تلقائي</p>
+  </section>
+
+  <!-- services -->
+  <section data-aos="fade-up">
+    <h2 class="section-title" style="text-align: center;">خبراتنا الأساسية</h2>
+    <div class="services-grid">
+      <div class="service-card"><i class="fas fa-gavel"></i><h3>التقاضي</h3><p>محاكمات واستئنافات عالية المخاطر بنسبة نجاح 89%.</p></div>
+      <div class="service-card"><i class="fas fa-building"></i><h3>الشركات</h3><p>الاندماجات والاستحواذات والامتثال للاعبين العالميين.</p></div>
+      <div class="service-card"><i class="fas fa-shield-alt"></i><h3>الملكية الفكرية</h3><p>براءات الاختراع والعلامات التجارية في العصر الرقمي.</p></div>
+      <div class="service-card"><i class="fas fa-hand-holding-heart"></i><h3>حقوق الإنسان</h3><p>تقاضي استراتيجي مجاني من أجل الحريات الأساسية.</p></div>
+    </div>
+  </section>
+
+  <!-- team with creative hover -->
+  <section style="background: #111317;">
+    <h2 class="section-title" style="text-align: center;">عقول قانونية</h2>
+    <div class="team-grid">
+      <div class="member" data-aos="flip-left">
+        <img src="https://images.unsplash.com/photo-1560250097-0b93528c311a?w=600&auto=format&fit=crop" alt="محامية">
+        <div class="member-info"><h3>أميرة السيد</h3><p>الشريك المؤسس</p><div class="social-links"><a href="#"><i class="fab fa-linkedin"></i></a><a href="#"><i class="fab fa-twitter"></i></a></div></div>
+      </div>
+      <div class="member" data-aos="flip-left" data-aos-delay="100">
+        <img src="https://images.unsplash.com/photo-1551836022-d5d88e9218df?w=600&auto=format&fit=crop" alt="محام">
+        <div class="member-info"><h3>ديفيد تشين</h3><p>رئيس قسم التقاضي</p><div class="social-links"><a href="#"><i class="fab fa-linkedin"></i></a><a href="#"><i class="fab fa-twitter"></i></a></div></div>
+      </div>
+      <div class="member" data-aos="flip-left" data-aos-delay="200">
+        <img src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600&auto=format&fit=crop" alt="محامية">
+        <div class="member-info"><h3>صوفيا لوران</h3><p>الملكية الفكرية والتقنية</p><div class="social-links"><a href="#"><i class="fab fa-linkedin"></i></a><a href="#"><i class="fab fa-twitter"></i></a></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- second video showcase -->
+  <section class="video-showcase">
+    <video autoplay muted loop playsinline id="promo-video">
+      <source src="https://cdn.pixabay.com/video/2021/08/09/84248-583441621_large.mp4" type="video/mp4">
+    </video>
+    <div class="video-content" data-aos="zoom-out">
+      <h2 class="section-title">حيث تلتقي الاستراتيجية بالسينما</h2>
+      <p style="font-size: 1.4rem;">شاهد منهجيتنا في القضايا المعقدة — كل إطار مهم.</p>
+      <a href="#" class="btn" style="margin-top: 2rem;">شاهد الفيلم</a>
+    </div>
+  </section>
+
+  <!-- contact -->
+  <section data-aos="fade-up">
+    <h2 class="section-title" style="text-align: center;">قنوات مفتوحة</h2>
+    <form class="contact-form">
+      <input type="text" placeholder="الاسم" required>
+      <input type="email" placeholder="البريد الإلكتروني" required>
+      <textarea rows="5" placeholder="كيف يمكننا مساعدتك؟"></textarea>
+      <button type="submit">إرسال</button>
+    </form>
+  </section>
+
+  <footer>
+    <p>© 2025 زيكولا للمحاماة — حيث يصبح القانون فنًا</p>
+  </footer>
+
+  <!-- scripts -->
+  <script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+  <script>
+    AOS.init({ duration: 1000, once: false, mirror: true });
+
+    // animated counters
+    const counters = document.querySelectorAll('.stat-number');
+    const animateCounters = () => {
+      counters.forEach(counter => {
+        const target = counter.getAttribute('data-target');
+        const isCurrency = target.includes('$');
+        if (isNaN(parseFloat(target)) && !isCurrency) {
+          counter.innerText = target;
+          return;
+        }
+        let targetNum = parseFloat(target.replace(/[$,B]/g, ''));
+        let suffix = '';
+        if (target.includes('B')) suffix = 'B';
+        let current = 0;
+        const increment = targetNum / 30;
+        const update = () => {
+          current += increment;
+          if (current < targetNum) {
+            counter.innerText = (isCurrency ? '$' : '') + Math.floor(current) + suffix;
+            requestAnimationFrame(update);
+          } else {
+            counter.innerText = target;
+          }
+        };
+        update();
+      });
+    };
+
+    window.addEventListener('load', animateCounters);
+
+    // 3D interactive moving room
+    const cube = document.getElementById('cube');
+    const container = document.getElementById('cubeContainer');
+    let isMouseInside = false;
+    let targetRotateX = -10, targetRotateY = 20;
+
+    container.addEventListener('mouseenter', () => {
+      isMouseInside = true;
+      cube.style.animation = 'none';
+    });
+    container.addEventListener('mouseleave', () => {
+      isMouseInside = false;
+      cube.style.animation = 'subtle-spin 30s infinite linear';
+    });
+
+    container.addEventListener('mousemove', (e) => {
+      if (!isMouseInside) return;
+      const rect = container.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      const posX = e.clientX - centerX;
+      const posY = e.clientY - centerY;
+      targetRotateY = (posX / (rect.width / 2)) * 30;
+      targetRotateX = (posY / (rect.height / 2)) * -20;
+      cube.style.transform = `rotateX(${targetRotateX}deg) rotateY(${targetRotateY}deg)`;
+    });
+
+    // subtle parallax
+    window.addEventListener('scroll', () => {
+      const scrolled = window.scrollY;
+      const heroContent = document.querySelector('.hero-content');
+      if (heroContent) {
+        heroContent.style.transform = `translateY(${scrolled * 0.2}px)`;
+      }
+    });
+
+    // touch support
+    let touchStartX, touchStartY;
+    container.addEventListener('touchstart', (e) => {
+      e.preventDefault();
+      const touch = e.touches[0];
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+      cube.style.animation = 'none';
+    }, { passive: false });
+
+    container.addEventListener('touchmove', (e) => {
+      e.preventDefault();
+      if (!touchStartX) return;
+      const touch = e.touches[0];
+      const deltaX = touch.clientX - touchStartX;
+      const deltaY = touch.clientY - touchStartY;
+      targetRotateY += deltaX * 0.5;
+      targetRotateX -= deltaY * 0.3;
+      cube.style.transform = `rotateX(${targetRotateX}deg) rotateY(${targetRotateY}deg)`;
+      touchStartX = touch.clientX;
+      touchStartY = touch.clientY;
+    });
+
+    container.addEventListener('touchend', () => {
+      cube.style.animation = 'subtle-spin 30s infinite linear';
+    });
+  </script>
+</body>
+</html>
