@@ -25,7 +25,6 @@
       color: var(--gold);
       overflow-x: hidden;
     }
-    /* جميع النصوص تستخدم الذهبي مع تباين محسن */
     h1, h2, h3, h4, h5, h6, p, span, a, li, div:not(.no-gold) {
       color: inherit;
     }
@@ -100,22 +99,22 @@
       background: var(--gold);
       border-radius: 10px;
     }
-    /* تحسين الهيدر للجوال */
+    /* تحسين الهيدر للجوال - خط أصغر */
     .brand-container {
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      max-width: calc(100vw - 90px);
+      max-width: calc(100vw - 120px);
       flex-wrap: nowrap;
       overflow: hidden;
     }
     .brand-logo {
-      height: 35px;
+      height: 32px;
       width: auto;
       flex-shrink: 0;
     }
     .brand-text {
-      font-size: clamp(0.6rem, 3.5vw, 1rem);
+      font-size: clamp(0.55rem, 3vw, 0.9rem);
       line-height: 1.2;
       white-space: normal;
       word-break: break-word;
@@ -129,33 +128,66 @@
     }
     @media (min-width: 768px) {
       .brand-logo {
-        height: 50px;
+        height: 45px;
       }
       .brand-text {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
         -webkit-line-clamp: 1;
       }
     }
-    @media (min-width: 1024px) {
-      .brand-text {
-        font-size: 1.6rem;
-      }
-    }
-    .lang-toggle {
+    .lang-toggle, .color-palette-icon {
       background: rgba(0,0,0,0.4);
       border: 1px solid var(--gold);
       border-radius: 30px;
-      padding: 4px 12px;
-      font-size: 14px;
+      padding: 4px 10px;
+      font-size: 13px;
       font-weight: bold;
       cursor: pointer;
       transition: 0.3s;
       white-space: nowrap;
       color: var(--gold);
     }
-    .lang-toggle:hover {
+    .lang-toggle:hover, .color-palette-icon:hover {
       background: var(--gold);
       color: black;
+    }
+    .color-palette-icon {
+      padding: 4px 8px;
+    }
+    /* لوحة الألوان */
+    .color-picker-panel {
+      position: absolute;
+      top: 60px;
+      left: 10px;
+      background: rgba(0,0,0,0.9);
+      backdrop-filter: blur(10px);
+      border: 1px solid var(--gold);
+      border-radius: 30px;
+      padding: 10px;
+      display: flex;
+      gap: 8px;
+      z-index: 100;
+      box-shadow: 0 0 20px rgba(0,0,0,0.5);
+    }
+    .color-option {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: transform 0.2s;
+    }
+    .color-option:hover {
+      transform: scale(1.2);
+      border-color: white;
+    }
+    @media (max-width: 768px) {
+      .color-picker-panel {
+        top: 50px;
+        left: 5px;
+        flex-wrap: wrap;
+        width: 150px;
+      }
     }
     /* Preloader 3D text */
     #preloader {
@@ -178,12 +210,12 @@
       font-family: 'Cairo', sans-serif;
       font-weight: 900;
       color: var(--gold);
-      font-size: clamp(1.5rem, 8vw, 4rem);
+      font-size: clamp(1.2rem, 6vw, 2.5rem);
       text-align: center;
       line-height: 1.3;
       transform-style: preserve-3d;
       animation: rotate3d 6s infinite linear;
-      text-shadow: 0 0 20px rgba(212,184,123,0.5);
+      text-shadow: 0 0 20px rgba(var(--gold-rgb), 0.5);
       white-space: nowrap;
     }
     .preloader-text span {
@@ -197,29 +229,31 @@
     @media (max-width: 768px) {
       .preloader-text {
         white-space: normal;
-        font-size: clamp(1.2rem, 6vw, 2.5rem);
+        font-size: clamp(1rem, 5vw, 2rem);
       }
       .preloader-text span {
         white-space: normal;
       }
     }
-    /* Hero title split */
+    /* Hero section - خطوط أصغر */
     #hero h1 {
-      font-size: clamp(1.5rem, 8vw, 4rem);
-      line-height: 1.2;
+      font-size: clamp(1.2rem, 6vw, 2.5rem);
+      line-height: 1.3;
       word-break: break-word;
     }
     #hero h1 .line1, #hero h1 .line2 {
       display: block;
     }
     #hero p {
-      font-size: clamp(0.9rem, 4vw, 1.5rem);
+      font-size: clamp(0.8rem, 3.5vw, 1.1rem);
       color: rgba(var(--gold-rgb), 0.9);
     }
-    @media (min-width: 768px) {
-      #hero h1 {
-        font-size: clamp(2rem, 5vw, 5rem);
-      }
+    /* عناوين الأقسام أصغر قليلاً */
+    h2.text-gold, h2:not(.brand-text) {
+      font-size: clamp(0.7rem, 3vw, 0.9rem);
+    }
+    h3.font-black {
+      font-size: clamp(1.5rem, 5vw, 3rem);
     }
     /* نصوص عامة */
     .text-gray-200, .text-gray-300, .text-gray-400, .text-gray-500 {
@@ -249,18 +283,22 @@
     </div>
   </div>
 
-  <header class="fixed top-0 w-full z-50 py-2 px-3 md:px-6 flex justify-between items-center bg-black/80 backdrop-blur-xl border-b border-gold/30 shadow-lg">
+  <header class="fixed top-0 w-full z-50 py-1.5 px-2 md:px-6 flex justify-between items-center bg-black/80 backdrop-blur-xl border-b border-gold/30 shadow-lg">
     <div class="brand-container">
       <img src="6.png" alt="شعار الشركة" class="brand-logo rounded-full border border-gold/50">
       <span class="brand-text" data-i18n="logo">شركة صالح ابراهيم باوارث وخالد علي باوارث للمحاماة والاستشارات القانونية</span>
     </div>
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-1">
+      <!-- أيقونة تغيير الألوان (هلال/لوحة ألوان) -->
+      <div class="color-palette-icon hidden md:flex items-center" id="colorPaletteIcon">
+        <i class="fas fa-palette"></i>
+      </div>
       <div class="lang-toggle hidden md:inline-block" id="langToggle">EN</div>
-      <button id="menuToggle" class="block md:hidden text-gold text-3xl focus:outline-none">
+      <button id="menuToggle" class="block md:hidden text-gold text-2xl focus:outline-none">
         <i class="fas fa-bars"></i>
       </button>
     </div>
-    <nav class="hidden md:flex gap-4 lg:gap-6 font-bold text-sm">
+    <nav class="hidden md:flex gap-3 lg:gap-5 font-bold text-xs">
       <a href="#hero" class="hover:text-gold transition duration-300" data-i18n="nav-home">الرئيسية</a>
       <a href="#services" class="hover:text-gold transition duration-300" data-i18n="nav-services">خدماتنا</a>
       <a href="#about" class="hover:text-gold transition duration-300" data-i18n="nav-about">من نحن</a>
@@ -270,13 +308,17 @@
       <a href="#faq" class="hover:text-gold transition duration-300" data-i18n="nav-faq">الأسئلة</a>
       <a href="#contact" class="hover:text-gold transition duration-300" data-i18n="nav-contact">اتصل بنا</a>
     </nav>
+    <!-- لوحة الألوان المنبثقة -->
+    <div id="colorPickerPanel" class="color-picker-panel hidden" style="position: fixed; top: 60px; left: 10px; z-index: 1000;">
+      <!-- سيتم تعبئة الألوان عبر JS -->
+    </div>
   </header>
 
   <div id="mobileMenu" class="fixed top-0 right-0 h-screen w-64 bg-black/95 backdrop-blur-xl z-[60] transform translate-x-full transition-transform duration-300 ease-in-out border-l border-gold/30 pt-20 px-6">
     <button id="closeMenu" class="absolute top-5 left-5 text-gold text-3xl">
       <i class="fas fa-times"></i>
     </button>
-    <nav class="flex flex-col gap-6 text-right text-lg font-bold">
+    <nav class="flex flex-col gap-5 text-right text-base font-bold">
       <a href="#hero" class="hover:text-gold transition" data-i18n="nav-home">الرئيسية</a>
       <a href="#services" class="hover:text-gold transition" data-i18n="nav-services">خدماتنا</a>
       <a href="#about" class="hover:text-gold transition" data-i18n="nav-about">من نحن</a>
@@ -287,95 +329,99 @@
       <a href="#contact" class="hover:text-gold transition" data-i18n="nav-contact">اتصل بنا</a>
       <div class="border-t border-gold/30 my-2"></div>
       <div class="lang-toggle text-center" id="langToggleMobile">EN</div>
+      <!-- أيقونة الألوان في القائمة المتنقلة -->
+      <div class="color-palette-icon text-center mt-2" id="colorPaletteIconMobile">
+        <i class="fas fa-palette ml-1"></i> الألوان
+      </div>
     </nav>
   </div>
 
-  <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-24">
+  <section id="hero" class="relative min-h-screen flex items-center justify-center overflow-hidden pt-16 md:pt-20">
     <video class="section-video" autoplay muted loop playsinline>
       <source src="4.mp4" type="video/mp4">
     </video>
     <div class="absolute inset-0 bg-gradient-to-b from-black/70 via-transparent to-black"></div>
-    <div class="relative z-10 text-center px-4 max-w-6xl mx-auto">
-      <h1 class="text-shadow font-black mb-4 md:mb-6 leading-tight" data-i18n="hero-title">
+    <div class="relative z-10 text-center px-3 max-w-5xl mx-auto">
+      <h1 class="text-shadow font-black mb-3 leading-tight" data-i18n="hero-title">
         <span class="line1">شركة صالح ابراهيم باوارث</span>
         <span class="line2">وخالد علي باوارث للمحاماة والاستشارات القانونية</span>
       </h1>
-      <p class="text-shadow max-w-4xl mx-auto mb-8 md:mb-10 font-light px-2" data-i18n="hero-desc">
+      <p class="text-shadow max-w-3xl mx-auto mb-6 font-light px-2" data-i18n="hero-desc">
         حيث تلتقي الخبرة بالأمانة، نحن لا ندافع عن قضيتك فحسب، بل نحميك من مخاطر المستقبل.
       </p>
-      <div class="flex flex-wrap gap-3 justify-center">
-        <div class="bg-black/40 border border-gold/30 px-4 py-1.5 md:px-6 md:py-2 rounded-full backdrop-blur-md text-sm md:text-base">
-          <i class="fas fa-check-circle ml-2"></i> <span data-i18n="hero-badge1">+500 قضية ناجحة</span>
+      <div class="flex flex-wrap gap-2 justify-center">
+        <div class="bg-black/40 border border-gold/30 px-3 py-1 md:px-5 md:py-1.5 rounded-full backdrop-blur-md text-xs md:text-sm">
+          <i class="fas fa-check-circle ml-1"></i> <span data-i18n="hero-badge1">+500 قضية ناجحة</span>
         </div>
-        <div class="bg-black/40 border border-gold/30 px-4 py-1.5 md:px-6 md:py-2 rounded-full backdrop-blur-md text-sm md:text-base">
-          <i class="fas fa-globe ml-2"></i> <span data-i18n="hero-badge2">تغطية دولية</span>
+        <div class="bg-black/40 border border-gold/30 px-3 py-1 md:px-5 md:py-1.5 rounded-full backdrop-blur-md text-xs md:text-sm">
+          <i class="fas fa-globe ml-1"></i> <span data-i18n="hero-badge2">تغطية دولية</span>
         </div>
       </div>
-      <div class="mt-8 md:mt-12">
-        <a href="#services" class="gold-btn inline-block px-8 md:px-10 py-3 md:py-4 text-base md:text-lg font-bold" data-i18n="hero-btn">اكتشف خدماتنا</a>
+      <div class="mt-6 md:mt-10">
+        <a href="#services" class="gold-btn inline-block px-6 md:px-8 py-2 md:py-3 text-sm md:text-base font-bold" data-i18n="hero-btn">اكتشف خدماتنا</a>
       </div>
     </div>
   </section>
 
-  <section id="services" class="relative py-20 md:py-24 px-4 md:px-16 overflow-hidden">
+  <section id="services" class="relative py-16 md:py-20 px-4 md:px-16 overflow-hidden">
     <video class="section-video" autoplay muted loop playsinline>
       <source src="2.mp4" type="video/mp4">
     </video>
     <div class="absolute inset-0 bg-black/60"></div>
     <div class="section-content max-w-7xl mx-auto">
-      <div class="text-center mb-12 md:mb-16">
-        <h2 class="text-xs sm:text-sm tracking-[0.3em] uppercase mb-2" data-i18n="services-sub">تخصصاتنا</h2>
-        <h3 class="text-3xl sm:text-4xl md:text-6xl font-black" data-i18n="services-title">مجالات الخبرة</h3>
-        <div class="h-1 w-20 bg-gold mx-auto mt-4"></div>
+      <div class="text-center mb-10 md:mb-14">
+        <h2 class="text-xs sm:text-sm tracking-[0.3em] uppercase mb-1" data-i18n="services-sub">تخصصاتنا</h2>
+        <h3 class="text-2xl sm:text-3xl md:text-5xl font-black" data-i18n="services-title">مجالات الخبرة</h3>
+        <div class="h-0.5 w-16 bg-gold mx-auto mt-3"></div>
       </div>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-        <div class="glass-card p-8 md:p-10 rounded-2xl">
-          <i class="fas fa-gavel text-3xl md:text-4xl mb-4 md:mb-6"></i>
-          <h4 class="text-xl md:text-2xl font-bold mb-3 md:mb-4" data-i18n="service1-title">التقاضي الجنائي</h4>
-          <p class="leading-relaxed text-sm md:text-base" data-i18n="service1-desc">دفاع صلب في أعقد القضايا الجنائية أمام المحاكم العليا.</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-7">
+        <div class="glass-card p-6 md:p-8 rounded-2xl">
+          <i class="fas fa-gavel text-2xl md:text-3xl mb-3 md:mb-4"></i>
+          <h4 class="text-lg md:text-xl font-bold mb-2 md:mb-3" data-i18n="service1-title">التقاضي الجنائي</h4>
+          <p class="leading-relaxed text-xs md:text-sm" data-i18n="service1-desc">دفاع صلب في أعقد القضايا الجنائية أمام المحاكم العليا.</p>
         </div>
-        <div class="glass-card p-8 md:p-10 rounded-2xl">
-          <i class="fas fa-handshake text-3xl md:text-4xl mb-4 md:mb-6"></i>
-          <h4 class="text-xl md:text-2xl font-bold mb-3 md:mb-4" data-i18n="service2-title">قانون الشركات</h4>
-          <p class="leading-relaxed text-sm md:text-base" data-i18n="service2-desc">تأسيس وهيكلة الشركات وحماية العلامات التجارية عالمياً.</p>
+        <div class="glass-card p-6 md:p-8 rounded-2xl">
+          <i class="fas fa-handshake text-2xl md:text-3xl mb-3 md:mb-4"></i>
+          <h4 class="text-lg md:text-xl font-bold mb-2 md:mb-3" data-i18n="service2-title">قانون الشركات</h4>
+          <p class="leading-relaxed text-xs md:text-sm" data-i18n="service2-desc">تأسيس وهيكلة الشركات وحماية العلامات التجارية عالمياً.</p>
         </div>
-        <div class="glass-card p-8 md:p-10 rounded-2xl">
-          <i class="fas fa-scale-unbalanced text-3xl md:text-4xl mb-4 md:mb-6"></i>
-          <h4 class="text-xl md:text-2xl font-bold mb-3 md:mb-4" data-i18n="service3-title">التحكيم الدولي</h4>
-          <p class="leading-relaxed text-sm md:text-base" data-i18n="service3-desc">حل المنازعات التجارية العابرة للحدود بأعلى معايير السرية.</p>
+        <div class="glass-card p-6 md:p-8 rounded-2xl">
+          <i class="fas fa-scale-unbalanced text-2xl md:text-3xl mb-3 md:mb-4"></i>
+          <h4 class="text-lg md:text-xl font-bold mb-2 md:mb-3" data-i18n="service3-title">التحكيم الدولي</h4>
+          <p class="leading-relaxed text-xs md:text-sm" data-i18n="service3-desc">حل المنازعات التجارية العابرة للحدود بأعلى معايير السرية.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="about" class="relative py-20 md:py-24 px-4 md:px-16 overflow-hidden">
+  <section id="about" class="relative py-16 md:py-20 px-4 md:px-16 overflow-hidden">
     <video class="section-video" autoplay muted loop playsinline>
       <source src="3.mp4" type="video/mp4">
     </video>
     <div class="absolute inset-0 bg-black/60"></div>
-    <div class="section-content max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-10 md:gap-16">
+    <div class="section-content max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-8 md:gap-14">
       <div class="w-full md:w-1/2">
         <div class="relative group">
           <img src="https://images.unsplash.com/photo-1589829545856-d10d557cf95f?auto=format&fit=crop&q=80&w=1000" class="rounded-2xl shadow-2xl border border-gold/20 w-full h-auto" alt="قانون">
-          <div class="absolute -bottom-4 md:-bottom-6 -right-4 md:-right-6 bg-gold p-4 md:p-8 rounded-2xl text-black text-center font-black text-sm md:text-base">
-            <span class="text-2xl md:text-4xl">25</span><br data-i18n="years">عاماً من الخبرة
+          <div class="absolute -bottom-3 md:-bottom-5 -right-3 md:-right-5 bg-gold p-3 md:p-6 rounded-2xl text-black text-center font-black text-xs md:text-sm">
+            <span class="text-xl md:text-3xl">25</span><br data-i18n="years">عاماً من الخبرة
           </div>
         </div>
       </div>
       <div class="w-full md:w-1/2">
-        <h2 class="text-lg md:text-xl font-bold mb-3 md:mb-4" data-i18n="about-sub">لماذا باوارث؟</h2>
-        <h3 class="text-2xl md:text-4xl lg:text-5xl font-black mb-4 md:mb-6 leading-tight" data-i18n="about-title">نحن لا نربح القضايا فقط، بل نصنع السوابق القانونية.</h3>
-        <p class="text-base md:text-lg mb-6 md:mb-8 leading-relaxed" data-i18n="about-desc">
+        <h2 class="text-base md:text-lg font-bold mb-2 md:mb-3" data-i18n="about-sub">لماذا باوارث؟</h2>
+        <h3 class="text-xl md:text-3xl lg:text-4xl font-black mb-3 md:mb-5 leading-tight" data-i18n="about-title">نحن لا نربح القضايا فقط، بل نصنع السوابق القانونية.</h3>
+        <p class="text-sm md:text-base mb-5 md:mb-7 leading-relaxed" data-i18n="about-desc">
           تأسست شركة صالح ابراهيم باوارث وخالد علي باوارث للمحاماة لتكون المرجع الأول في الشرق الأوسط. نجمع بين الخبرة الأكاديمية العميقة والتحرك الميداني الجريء.
         </p>
-        <ul class="space-y-3 text-sm md:text-base">
-          <li class="flex items-center gap-3">
+        <ul class="space-y-2 text-xs md:text-sm">
+          <li class="flex items-center gap-2">
             <i class="fas fa-check"></i> <span data-i18n="about-point1">فريق من المستشارين الدوليين</span>
           </li>
-          <li class="flex items-center gap-3">
+          <li class="flex items-center gap-2">
             <i class="fas fa-check"></i> <span data-i18n="about-point2">سرية بيانات مطلقة بنظام تشفير عسكري</span>
           </li>
-          <li class="flex items-center gap-3">
+          <li class="flex items-center gap-2">
             <i class="fas fa-check"></i> <span data-i18n="about-point3">استجابة فورية على مدار الساعة</span>
           </li>
         </ul>
@@ -383,141 +429,141 @@
     </div>
   </section>
 
-  <section id="stats" class="relative py-20 md:py-24 px-4 md:px-16 overflow-hidden">
+  <section id="stats" class="relative py-16 md:py-20 px-4 md:px-16 overflow-hidden">
     <video class="section-video" autoplay muted loop playsinline>
       <source src="https://assets.mixkit.co/videos/preview/mixkit-lawyer-working-at-the-office-43862-large.mp4" type="video/mp4">
     </video>
     <div class="absolute inset-0 bg-black/70"></div>
     <div class="section-content max-w-7xl mx-auto text-center">
-      <h2 class="text-xs sm:text-sm tracking-[0.3em] uppercase mb-2" data-i18n="stats-sub">أرقامنا</h2>
-      <h3 class="text-3xl sm:text-4xl md:text-6xl font-black mb-10 md:mb-16" data-i18n="stats-title">إحصائيات تروي قصتنا</h3>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8">
-        <div class="glass-card p-4 md:p-8 rounded-2xl">
-          <div class="text-3xl md:text-5xl font-black mb-1 md:mb-2">+500</div>
-          <p class="text-sm md:text-base" data-i18n="stat1">قضية ناجحة</p>
+      <h2 class="text-xs sm:text-sm tracking-[0.3em] uppercase mb-1" data-i18n="stats-sub">أرقامنا</h2>
+      <h3 class="text-2xl sm:text-3xl md:text-5xl font-black mb-8 md:mb-12" data-i18n="stats-title">إحصائيات تروي قصتنا</h3>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">
+        <div class="glass-card p-3 md:p-6 rounded-2xl">
+          <div class="text-2xl md:text-4xl font-black mb-0.5 md:mb-1">+500</div>
+          <p class="text-xs md:text-sm" data-i18n="stat1">قضية ناجحة</p>
         </div>
-        <div class="glass-card p-4 md:p-8 rounded-2xl">
-          <div class="text-3xl md:text-5xl font-black mb-1 md:mb-2">+50</div>
-          <p class="text-sm md:text-base" data-i18n="stat2">خبير قانوني</p>
+        <div class="glass-card p-3 md:p-6 rounded-2xl">
+          <div class="text-2xl md:text-4xl font-black mb-0.5 md:mb-1">+50</div>
+          <p class="text-xs md:text-sm" data-i18n="stat2">خبير قانوني</p>
         </div>
-        <div class="glass-card p-4 md:p-8 rounded-2xl">
-          <div class="text-3xl md:text-5xl font-black mb-1 md:mb-2">15</div>
-          <p class="text-sm md:text-base" data-i18n="stat3">فرع حول العالم</p>
+        <div class="glass-card p-3 md:p-6 rounded-2xl">
+          <div class="text-2xl md:text-4xl font-black mb-0.5 md:mb-1">15</div>
+          <p class="text-xs md:text-sm" data-i18n="stat3">فرع حول العالم</p>
         </div>
-        <div class="glass-card p-4 md:p-8 rounded-2xl">
-          <div class="text-3xl md:text-5xl font-black mb-1 md:mb-2">25</div>
-          <p class="text-sm md:text-base" data-i18n="stat4">عاماً من التميز</p>
+        <div class="glass-card p-3 md:p-6 rounded-2xl">
+          <div class="text-2xl md:text-4xl font-black mb-0.5 md:mb-1">25</div>
+          <p class="text-xs md:text-sm" data-i18n="stat4">عاماً من التميز</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="clients" class="relative py-20 md:py-24 px-4 md:px-16 overflow-hidden">
+  <section id="clients" class="relative py-16 md:py-20 px-4 md:px-16 overflow-hidden">
     <video class="section-video" autoplay muted loop playsinline>
       <source src="https://assets.mixkit.co/videos/preview/mixkit-business-deal-handshake-338-large.mp4" type="video/mp4">
     </video>
     <div class="absolute inset-0 bg-black/60"></div>
     <div class="section-content max-w-7xl mx-auto text-center">
-      <h2 class="text-xs sm:text-sm tracking-[0.3em] uppercase mb-2" data-i18n="clients-sub">ثقة العملاء</h2>
-      <h3 class="text-3xl sm:text-4xl md:text-6xl font-black mb-10 md:mb-16" data-i18n="clients-title">من شركاؤنا</h3>
-      <div class="flex flex-wrap justify-center gap-4 md:gap-8 items-center">
-        <div class="glass-card px-4 md:px-8 py-2 md:py-4 rounded-xl text-lg md:text-2xl font-bold" data-i18n="client1">شركة أموال</div>
-        <div class="glass-card px-4 md:px-8 py-2 md:py-4 rounded-xl text-lg md:text-2xl font-bold" data-i18n="client2">بنك الريان</div>
-        <div class="glass-card px-4 md:px-8 py-2 md:py-4 rounded-xl text-lg md:text-2xl font-bold" data-i18n="client3">مؤسسة نماء</div>
-        <div class="glass-card px-4 md:px-8 py-2 md:py-4 rounded-xl text-lg md:text-2xl font-bold" data-i18n="client4">مجموعة فرسان</div>
-        <div class="glass-card px-4 md:px-8 py-2 md:py-4 rounded-xl text-lg md:text-2xl font-bold" data-i18n="client5">هيئة العدالة</div>
+      <h2 class="text-xs sm:text-sm tracking-[0.3em] uppercase mb-1" data-i18n="clients-sub">ثقة العملاء</h2>
+      <h3 class="text-2xl sm:text-3xl md:text-5xl font-black mb-8 md:mb-12" data-i18n="clients-title">من شركاؤنا</h3>
+      <div class="flex flex-wrap justify-center gap-2 md:gap-5 items-center">
+        <div class="glass-card px-3 md:px-6 py-1.5 md:py-3 rounded-xl text-base md:text-xl font-bold" data-i18n="client1">شركة أموال</div>
+        <div class="glass-card px-3 md:px-6 py-1.5 md:py-3 rounded-xl text-base md:text-xl font-bold" data-i18n="client2">بنك الريان</div>
+        <div class="glass-card px-3 md:px-6 py-1.5 md:py-3 rounded-xl text-base md:text-xl font-bold" data-i18n="client3">مؤسسة نماء</div>
+        <div class="glass-card px-3 md:px-6 py-1.5 md:py-3 rounded-xl text-base md:text-xl font-bold" data-i18n="client4">مجموعة فرسان</div>
+        <div class="glass-card px-3 md:px-6 py-1.5 md:py-3 rounded-xl text-base md:text-xl font-bold" data-i18n="client5">هيئة العدالة</div>
       </div>
     </div>
   </section>
 
-  <section id="awards" class="relative py-20 md:py-24 px-4 md:px-16 overflow-hidden">
+  <section id="awards" class="relative py-16 md:py-20 px-4 md:px-16 overflow-hidden">
     <video class="section-video" autoplay muted loop playsinline>
       <source src="https://assets.mixkit.co/videos/preview/mixkit-conference-with-lots-of-people-341-large.mp4" type="video/mp4">
     </video>
     <div class="absolute inset-0 bg-black/60"></div>
     <div class="section-content max-w-7xl mx-auto">
-      <h2 class="text-xs sm:text-sm tracking-[0.3em] uppercase mb-2 text-center" data-i18n="awards-sub">تكريمات</h2>
-      <h3 class="text-3xl sm:text-4xl md:text-6xl font-black mb-10 md:mb-16 text-center" data-i18n="awards-title">جوائز وتقديرات</h3>
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8">
-        <div class="glass-card p-6 md:p-8 rounded-2xl text-center">
-          <i class="fas fa-trophy text-4xl md:text-5xl mb-3 md:mb-4"></i>
-          <h4 class="text-xl md:text-2xl font-bold mb-2" data-i18n="award1-title">أفضل مكتب محاماة 2025</h4>
-          <p class="text-sm md:text-base" data-i18n="award1-org">جوائز الشرق الأوسط للقانون</p>
+      <h2 class="text-xs sm:text-sm tracking-[0.3em] uppercase mb-1 text-center" data-i18n="awards-sub">تكريمات</h2>
+      <h3 class="text-2xl sm:text-3xl md:text-5xl font-black mb-8 md:mb-12 text-center" data-i18n="awards-title">جوائز وتقديرات</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-7">
+        <div class="glass-card p-5 md:p-7 rounded-2xl text-center">
+          <i class="fas fa-trophy text-3xl md:text-4xl mb-2 md:mb-3"></i>
+          <h4 class="text-lg md:text-xl font-bold mb-1" data-i18n="award1-title">أفضل مكتب محاماة 2025</h4>
+          <p class="text-xs md:text-sm" data-i18n="award1-org">جوائز الشرق الأوسط للقانون</p>
         </div>
-        <div class="glass-card p-6 md:p-8 rounded-2xl text-center">
-          <i class="fas fa-medal text-4xl md:text-5xl mb-3 md:mb-4"></i>
-          <h4 class="text-xl md:text-2xl font-bold mb-2" data-i18n="award2-title">التميز في التحكيم الدولي</h4>
-          <p class="text-sm md:text-base" data-i18n="award2-org">مجلة القانون العالمي</p>
+        <div class="glass-card p-5 md:p-7 rounded-2xl text-center">
+          <i class="fas fa-medal text-3xl md:text-4xl mb-2 md:mb-3"></i>
+          <h4 class="text-lg md:text-xl font-bold mb-1" data-i18n="award2-title">التميز في التحكيم الدولي</h4>
+          <p class="text-xs md:text-sm" data-i18n="award2-org">مجلة القانون العالمي</p>
         </div>
-        <div class="glass-card p-6 md:p-8 rounded-2xl text-center">
-          <i class="fas fa-star text-4xl md:text-5xl mb-3 md:mb-4"></i>
-          <h4 class="text-xl md:text-2xl font-bold mb-2" data-i18n="award3-title">جائزة الابتكار القانوني</h4>
-          <p class="text-sm md:text-base" data-i18n="award3-org">منتدى العدالة الدولي</p>
+        <div class="glass-card p-5 md:p-7 rounded-2xl text-center">
+          <i class="fas fa-star text-3xl md:text-4xl mb-2 md:mb-3"></i>
+          <h4 class="text-lg md:text-xl font-bold mb-1" data-i18n="award3-title">جائزة الابتكار القانوني</h4>
+          <p class="text-xs md:text-sm" data-i18n="award3-org">منتدى العدالة الدولي</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="faq" class="relative py-20 md:py-24 px-4 md:px-16 overflow-hidden">
+  <section id="faq" class="relative py-16 md:py-20 px-4 md:px-16 overflow-hidden">
     <video class="section-video" autoplay muted loop playsinline>
       <source src="https://assets.mixkit.co/videos/preview/mixkit-library-shelves-with-books-43865-large.mp4" type="video/mp4">
     </video>
     <div class="absolute inset-0 bg-black/60"></div>
     <div class="section-content max-w-7xl mx-auto">
-      <h2 class="text-xs sm:text-sm tracking-[0.3em] uppercase mb-2 text-center" data-i18n="faq-sub">استفساراتكم</h2>
-      <h3 class="text-3xl sm:text-4xl md:text-6xl font-black mb-10 md:mb-16 text-center" data-i18n="faq-title">الأسئلة الشائعة</h3>
-      <div class="space-y-4 md:space-y-6">
-        <div class="glass-card p-5 md:p-6 rounded-2xl">
-          <h4 class="text-lg md:text-xl font-bold mb-2" data-i18n="faq1-q">كيف أستشير محاميًا؟</h4>
-          <p class="text-sm md:text-base" data-i18n="faq1-a">يمكنك حجز استشارة عبر موقعنا أو الاتصال بفريق الدعم. نقدم استشارات أولية مجانية.</p>
+      <h2 class="text-xs sm:text-sm tracking-[0.3em] uppercase mb-1 text-center" data-i18n="faq-sub">استفساراتكم</h2>
+      <h3 class="text-2xl sm:text-3xl md:text-5xl font-black mb-8 md:mb-12 text-center" data-i18n="faq-title">الأسئلة الشائعة</h3>
+      <div class="space-y-3 md:space-y-5">
+        <div class="glass-card p-4 md:p-5 rounded-2xl">
+          <h4 class="text-base md:text-lg font-bold mb-1" data-i18n="faq1-q">كيف أستشير محاميًا؟</h4>
+          <p class="text-xs md:text-sm" data-i18n="faq1-a">يمكنك حجز استشارة عبر موقعنا أو الاتصال بفريق الدعم. نقدم استشارات أولية مجانية.</p>
         </div>
-        <div class="glass-card p-5 md:p-6 rounded-2xl">
-          <h4 class="text-lg md:text-xl font-bold mb-2" data-i18n="faq2-q">ما هي تكلفة الخدمات القانونية؟</h4>
-          <p class="text-sm md:text-base" data-i18n="faq2-a">تعتمد التكلفة على نوع القضية ومدى تعقيدها. نقدم عروض أسعار شفافة ومفصلة.</p>
+        <div class="glass-card p-4 md:p-5 rounded-2xl">
+          <h4 class="text-base md:text-lg font-bold mb-1" data-i18n="faq2-q">ما هي تكلفة الخدمات القانونية؟</h4>
+          <p class="text-xs md:text-sm" data-i18n="faq2-a">تعتمد التكلفة على نوع القضية ومدى تعقيدها. نقدم عروض أسعار شفافة ومفصلة.</p>
         </div>
-        <div class="glass-card p-5 md:p-6 rounded-2xl">
-          <h4 class="text-lg md:text-xl font-bold mb-2" data-i18n="faq3-q">هل تتعاملون مع قضايا دولية؟</h4>
-          <p class="text-sm md:text-base" data-i18n="faq3-a">نعم، لدينا فريق متخصص في القضايا العابرة للحدود ولدينا شراكات مع مكاتب حول العالم.</p>
+        <div class="glass-card p-4 md:p-5 rounded-2xl">
+          <h4 class="text-base md:text-lg font-bold mb-1" data-i18n="faq3-q">هل تتعاملون مع قضايا دولية؟</h4>
+          <p class="text-xs md:text-sm" data-i18n="faq3-a">نعم، لدينا فريق متخصص في القضايا العابرة للحدود ولدينا شراكات مع مكاتب حول العالم.</p>
         </div>
       </div>
     </div>
   </section>
 
-  <section id="contact" class="relative py-20 md:py-24 px-4 md:px-16 overflow-hidden">
+  <section id="contact" class="relative py-16 md:py-20 px-4 md:px-16 overflow-hidden">
     <video class="section-video" autoplay muted loop playsinline>
       <source src="https://assets.mixkit.co/videos/preview/mixkit-modern-office-with-computers-43864-large.mp4" type="video/mp4">
     </video>
     <div class="absolute inset-0 bg-black/60"></div>
     <div class="section-content max-w-7xl mx-auto">
-      <h2 class="text-xs sm:text-sm tracking-[0.3em] uppercase mb-2 text-center" data-i18n="contact-sub">تواصلوا معنا</h2>
-      <h3 class="text-3xl sm:text-4xl md:text-6xl font-black mb-10 md:mb-16 text-center" data-i18n="contact-title">نحن هنا لمساعدتكم</h3>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
-        <div class="glass-card p-6 md:p-8 rounded-2xl">
-          <h4 class="text-xl md:text-2xl font-bold mb-4 md:mb-6" data-i18n="contact-info-title">معلومات الاتصال</h4>
-          <ul class="space-y-3 md:space-y-4 text-sm md:text-base">
-            <li><i class="fas fa-map-marker-alt ml-3"></i> <span data-i18n="address">العنوان</span></li>
-            <li><i class="fas fa-phone-alt ml-3"></i> رقم الهاتف</li>
-            <li><i class="fas fa-envelope ml-3"></i> info@bawarith-law.com</li>
-            <li><i class="fas fa-clock ml-3"></i> <span data-i18n="hours">السبت - الخميس: 9 صباحاً - 9 مساءً</span></li>
+      <h2 class="text-xs sm:text-sm tracking-[0.3em] uppercase mb-1 text-center" data-i18n="contact-sub">تواصلوا معنا</h2>
+      <h3 class="text-2xl sm:text-3xl md:text-5xl font-black mb-8 md:mb-12 text-center" data-i18n="contact-title">نحن هنا لمساعدتكم</h3>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-10">
+        <div class="glass-card p-5 md:p-7 rounded-2xl">
+          <h4 class="text-lg md:text-xl font-bold mb-3 md:mb-5" data-i18n="contact-info-title">معلومات الاتصال</h4>
+          <ul class="space-y-2 md:space-y-3 text-xs md:text-sm">
+            <li><i class="fas fa-map-marker-alt ml-2"></i> <span data-i18n="address">العنوان</span></li>
+            <li><i class="fas fa-phone-alt ml-2"></i> رقم الهاتف</li>
+            <li><i class="fas fa-envelope ml-2"></i> info@bawarith-law.com</li>
+            <li><i class="fas fa-clock ml-2"></i> <span data-i18n="hours">السبت - الخميس: 9 صباحاً - 9 مساءً</span></li>
           </ul>
         </div>
-        <div class="glass-card p-6 md:p-8 rounded-2xl">
-          <h4 class="text-xl md:text-2xl font-bold mb-4 md:mb-6" data-i18n="contact-form-title">أرسل رسالة</h4>
+        <div class="glass-card p-5 md:p-7 rounded-2xl">
+          <h4 class="text-lg md:text-xl font-bold mb-3 md:mb-5" data-i18n="contact-form-title">أرسل رسالة</h4>
           <form>
-            <input type="text" placeholder="الاسم" data-i18n-placeholder="name-placeholder" class="w-full p-3 mb-3 md:mb-4 bg-black/50 border border-gold/30 rounded-lg text-sm md:text-base">
-            <input type="email" placeholder="البريد الإلكتروني" data-i18n-placeholder="email-placeholder" class="w-full p-3 mb-3 md:mb-4 bg-black/50 border border-gold/30 rounded-lg text-sm md:text-base">
-            <textarea rows="4" placeholder="الرسالة" data-i18n-placeholder="message-placeholder" class="w-full p-3 mb-3 md:mb-4 bg-black/50 border border-gold/30 rounded-lg text-sm md:text-base"></textarea>
-            <button class="gold-btn w-full py-3 text-base md:text-lg font-bold" data-i18n="send-btn">إرسال</button>
+            <input type="text" placeholder="الاسم" data-i18n-placeholder="name-placeholder" class="w-full p-2 mb-2 md:mb-3 bg-black/50 border border-gold/30 rounded-lg text-xs md:text-sm">
+            <input type="email" placeholder="البريد الإلكتروني" data-i18n-placeholder="email-placeholder" class="w-full p-2 mb-2 md:mb-3 bg-black/50 border border-gold/30 rounded-lg text-xs md:text-sm">
+            <textarea rows="3" placeholder="الرسالة" data-i18n-placeholder="message-placeholder" class="w-full p-2 mb-2 md:mb-3 bg-black/50 border border-gold/30 rounded-lg text-xs md:text-sm"></textarea>
+            <button class="gold-btn w-full py-2 text-sm md:text-base font-bold" data-i18n="send-btn">إرسال</button>
           </form>
         </div>
       </div>
     </div>
   </section>
 
-  <footer class="bg-black py-8 md:py-12 border-t border-gold/20 px-4 md:px-6">
+  <footer class="bg-black py-6 md:py-10 border-t border-gold/20 px-4 md:px-6">
     <div class="max-w-7xl mx-auto text-center">
-      <div class="text-2xl md:text-3xl font-black mb-4 md:mb-6" data-i18n="logo">شركة صالح ابراهيم باوارث وخالد علي باوارث للمحاماة والاستشارات القانونية</div>
-      <div class="flex justify-center gap-4 md:gap-6 mb-6 md:mb-8 text-xl md:text-2xl">
+      <div class="text-lg md:text-2xl font-black mb-3 md:mb-5" data-i18n="logo">شركة صالح ابراهيم باوارث وخالد علي باوارث للمحاماة والاستشارات القانونية</div>
+      <div class="flex justify-center gap-3 md:gap-5 mb-4 md:mb-6 text-lg md:text-xl">
         <a href="#" class="hover:text-gold transition"><i class="fab fa-linkedin"></i></a>
         <a href="#" class="hover:text-gold transition"><i class="fab fa-twitter"></i></a>
         <a href="#" class="hover:text-gold transition"><i class="fab fa-instagram"></i></a>
@@ -528,6 +574,77 @@
   </footer>
 
   <script>
+    // قائمة الألوان (8 ألوان)
+    const colorOptions = [
+      { name: 'ذهبي أساسي', hex: '#D4B87B', rgb: '212,184,123' },
+      { name: 'أصفر فاتح', hex: '#F0E68C', rgb: '240,230,140' },
+      { name: 'ذهبي غامق', hex: '#B8860B', rgb: '184,134,11' },
+      { name: 'ذهبي قديم', hex: '#CFB53B', rgb: '207,181,59' },
+      { name: 'فضي فاتح', hex: '#E0E0E0', rgb: '224,224,224' },
+      { name: 'كريمي', hex: '#FFFDD0', rgb: '255,253,208' },
+      { name: 'برونزي', hex: '#CD7F32', rgb: '205,127,50' },
+      { name: 'عاجي', hex: '#FFFFF0', rgb: '255,255,240' }
+    ];
+
+    // إنشاء لوحة الألوان
+    const colorPanel = document.getElementById('colorPickerPanel');
+    colorOptions.forEach(color => {
+      const div = document.createElement('div');
+      div.className = 'color-option';
+      div.style.backgroundColor = color.hex;
+      div.setAttribute('data-hex', color.hex);
+      div.setAttribute('data-rgb', color.rgb);
+      div.setAttribute('title', color.name);
+      div.addEventListener('click', function(e) {
+        e.stopPropagation();
+        const hex = this.getAttribute('data-hex');
+        const rgb = this.getAttribute('data-rgb');
+        document.documentElement.style.setProperty('--gold', hex);
+        document.documentElement.style.setProperty('--gold-rgb', rgb);
+        // تحديث لون الجسيمات في three.js
+        if (window.particlesMaterial) {
+          window.particlesMaterial.color.set(hex);
+        }
+        // إخفاء اللوحة بعد الاختيار
+        colorPanel.classList.add('hidden');
+      });
+      colorPanel.appendChild(div);
+    });
+
+    // وظيفة إظهار/إخفاء لوحة الألوان
+    function toggleColorPanel() {
+      colorPanel.classList.toggle('hidden');
+    }
+
+    // ربط الأيقونات
+    const colorIconDesktop = document.getElementById('colorPaletteIcon');
+    const colorIconMobile = document.getElementById('colorPaletteIconMobile');
+    if (colorIconDesktop) {
+      colorIconDesktop.addEventListener('click', function(e) {
+        e.stopPropagation();
+        toggleColorPanel();
+      });
+    }
+    if (colorIconMobile) {
+      colorIconMobile.addEventListener('click', function(e) {
+        e.stopPropagation();
+        toggleColorPanel();
+      });
+    }
+
+    // إخفاء اللوحة عند النقر في أي مكان آخر
+    document.addEventListener('click', function(e) {
+      if (!colorPanel.contains(e.target) && !colorIconDesktop?.contains(e.target) && !colorIconMobile?.contains(e.target)) {
+        colorPanel.classList.add('hidden');
+      }
+    });
+
+    // منع إغلاق اللوحة عند النقر داخلها
+    colorPanel.addEventListener('click', function(e) {
+      e.stopPropagation();
+    });
+
+    // ترجمة
     const translations = {
       ar: {
         'site-title': 'شركة صالح ابراهيم باوارث وخالد علي باوارث للمحاماة والاستشارات القانونية',
@@ -761,6 +878,7 @@
       });
     }
 
+    // Three.js
     const scene = new THREE.Scene();
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
     const renderer = new THREE.WebGLRenderer({ alpha: true });
@@ -780,7 +898,9 @@
       vertices.push(THREE.MathUtils.randFloatSpread(2000), THREE.MathUtils.randFloatSpread(2000), THREE.MathUtils.randFloatSpread(2000));
     }
     geometry.setAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));
-    const particles = new THREE.Points(geometry, new THREE.PointsMaterial({ color: 0xD4B87B, size: 1.5 }));
+    const particlesMaterial = new THREE.PointsMaterial({ color: 0xD4B87B, size: 1.5 });
+    window.particlesMaterial = particlesMaterial; // للوصول من لوحة الألوان
+    const particles = new THREE.Points(geometry, particlesMaterial);
     scene.add(particles);
     camera.position.z = 1000;
     function animate() {
