@@ -134,13 +134,13 @@
         -webkit-line-clamp: 1;
       }
     }
-    /* Desktop only: two lines and fixed font size (no scaling) */
+    /* Desktop only: two lines, fixed font size (no scaling), full visibility */
     @media (min-width: 1024px) {
       .brand-text {
-        font-size: 1rem !important;        /* fixed size, independent of screen width */
+        font-size: 0.9rem !important;        /* fixed size, independent of screen width */
         -webkit-line-clamp: 2 !important;
         line-clamp: 2;
-        max-width: 280px;                   /* adjust to fit two lines nicely */
+        max-width: 450px;                     /* enough to fit the long name */
         white-space: normal;
       }
     }
@@ -292,7 +292,7 @@
       <span class="brand-text" data-i18n="logo">شركة صالح ابراهيم باوارث وخالد علي باوارث للمحاماة والاستشارات القانونية</span>
     </div>
     <div class="flex items-center gap-1">
-      <!-- Color palette icon removed as per desktop-only request -->
+      <!-- Color palette icon removed from desktop, only mobile remains -->
       <div class="lang-toggle hidden md:inline-block" id="langToggle">EN</div>
       <button id="menuToggle" class="block md:hidden text-gold text-2xl focus:outline-none">
         <i class="fas fa-bars"></i>
@@ -326,7 +326,7 @@
       <a href="#contact" class="hover:text-gold transition" data-i18n="nav-contact">اتصل بنا</a>
       <div class="border-t border-gold/30 my-2"></div>
       <div class="lang-toggle text-center" id="langToggleMobile">EN</div>
-      <!-- Mobile color palette icon remains (hidden on desktop anyway) -->
+      <!-- Mobile color palette icon (only visible on mobile) -->
       <div class="color-palette-icon text-center mt-2" id="colorPaletteIconMobile">
         <i class="fas fa-palette ml-1"></i> الألوان
       </div>
@@ -608,9 +608,7 @@
       colorPanel.classList.toggle('hidden');
     }
 
-    const colorIconDesktop = document.getElementById('colorPaletteIcon'); // removed, so null
     const colorIconMobile = document.getElementById('colorPaletteIconMobile');
-    // Only attach mobile event if exists
     if (colorIconMobile) {
       colorIconMobile.addEventListener('click', function(e) {
         e.stopPropagation();
@@ -619,7 +617,7 @@
     }
 
     document.addEventListener('click', function(e) {
-      if (!colorPanel.contains(e.target) && !colorIconDesktop?.contains(e.target) && !colorIconMobile?.contains(e.target)) {
+      if (!colorPanel.contains(e.target) && !colorIconMobile?.contains(e.target)) {
         colorPanel.classList.add('hidden');
       }
     });
