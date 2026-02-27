@@ -113,25 +113,34 @@
       flex-shrink: 0;
     }
     .brand-text {
-      font-size: clamp(0.45rem, 2.2vw, 0.75rem);
-      line-height: 1.2;
+      font-size: 0.7rem;
+      line-height: 1.3;
       white-space: normal;
       word-break: break-word;
-      max-width: 100%;
+      max-width: 170px;
       font-weight: 900;
       color: var(--gold);
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
-      overflow: hidden;
+      display: block;
+    }
+    @media (min-width: 640px) {
+      .brand-text {
+        font-size: 0.8rem;
+        max-width: 220px;
+      }
     }
     @media (min-width: 768px) {
       .brand-logo {
         height: 45px;
       }
       .brand-text {
-        font-size: 1.2rem;
-        -webkit-line-clamp: 1;
+        font-size: 0.9rem;
+        max-width: 300px;
+      }
+    }
+    @media (min-width: 1024px) {
+      .brand-text {
+        font-size: 1rem;
+        max-width: 380px;
       }
     }
     .lang-toggle, .color-palette-icon {
